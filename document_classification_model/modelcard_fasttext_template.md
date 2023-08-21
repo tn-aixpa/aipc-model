@@ -1,7 +1,4 @@
----
 
-{{ card_data }}
----
 
 # Model Card for Document Classification
 
@@ -74,7 +71,6 @@ The out-of-scope use relies on the quality of annotation within the utilized dat
 
 Use the code [in this file](https://github.com/dhfbk/document-classification/blob/master/src-preprocess/02-parse.py) to get started with the model.
 
-{{ get_started_code | default("[More Information Needed]", true)}}
 
 ## Training Details
 
