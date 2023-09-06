@@ -11,6 +11,6 @@ Moreover, the design of these cards will enable **customization** and **extendab
 
 The main considerations - social impact, reproducibility, and evaluation - form the main aspects of our templates.
 
-![alt text](AI_Cards-General_Description..png)
+![alt text](AI_Cards-General_Description.png)
 ---------------------------------------------------------------------------------------------------------
 

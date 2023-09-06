@@ -1,21 +1,24 @@
 name: "Document Classificaton"
 description: "Classifying legal documents"
+domain_problem: "reference to domain problem card"
 ai_tasks:
  - task_id: name_of_first_task
-    domain_task: "reference to domain task 1"
     model_card: model_card_id
     data: reference_to_dataset_card
     adaptation_techniques:
       code_implementation:
       data_profiling_when_to_adapt:
+        data_metrics:
+        data_distribution:
     optimisation_techniques:
       code_implementation:
  - task_id: name_of_second_task
-    domain_task: "reference to domain task 2"
     model_card: model_card_id
     data: reference_to_dataset_card
     adaptation_techniques:
       code_implementation:
       data_profiling_when_to_adapt:
+        data_metrics:
+        data_distribution:
     optimisation_techniques:
       code_implementation:

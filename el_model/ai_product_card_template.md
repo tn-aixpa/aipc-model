@@ -1,7 +1,9 @@
 
-# AI Product Card for {{ name of th final product }}
+# AI Product Card for {{ name of the final product }}
 
 <!-- Provide a quick summary of what the produuct is. -->
+
+## Reference to Domain Card
 
 ## AI Product Card Details
 
@@ -14,8 +16,7 @@
 
 ## List of AI Tasks
 
-### Reference to AI task
- TODO
+ 
 ### Reference to Model Card
 
 {{model_card_name}}
