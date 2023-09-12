@@ -16,7 +16,14 @@
 
 ### Dataset Summary
 
-{{ dataset_summary | default("[More Information Needed]", true)}}
+The General Series includes all acts like: 
+ordinary laws 
+presidential decrees, 
+ministerial decrees 
+resolutions, 
+other regulatory acts from the central and peripheral state administrations.
+
+
 
 ### Supported Tasks and Leaderboards
 
@@ -30,11 +37,22 @@
 
 ### Data Instances
 
-{{ data_instances_section | default("[More Information Needed]", true)}}
-
+Example of one single data instance:
+```
+{
+        "text": "Example of the text",
+        "id": "ipzs-20210604_21G00088",
+        "labels": [
+            "A1810"
+        ]
+    }
+```
 ### Data Fields
 
-{{ data_fields_section | default("[More Information Needed]", true)}}
+The data fields the model accepts are the following:
+- text
+- id
+- labels
 
 ### Data Splits
 
