@@ -1,0 +1,15 @@
+{
+  "schema": [
+    {
+      "name": "testo",
+      "type": "string"
+    },
+    {
+      "name": "codiceRedazionale",
+      "type": "string",
+      "constraints": {
+          "enum": ["19G00170", "13G00065"]
+      }           
+    }
+  ]
+}

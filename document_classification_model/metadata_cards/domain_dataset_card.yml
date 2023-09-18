@@ -1,16 +1,13 @@
 name: "Automatic classification of legal documents dataset"
-schema: refer to json
+dataset_typology: text data
+dataset_format: document_database
+schema: data_schema.json
+constraints: data_constraints.json
 refer_to_data_implementation_example: http://url_example
-dataset_typology: document_database
-constraints: data_schema.json
+input:
+output:
 data_measurements:
   data_drift:                      #how the current dataset differs from the reference dataset our model was trained on
     out_of_distribution_vocabulary: 
+
   data_quality_check:   ../ai_task_implementation/evidently_monitoring.py           #apply data quality check proactively
-
-
-
-
-
-
-  
