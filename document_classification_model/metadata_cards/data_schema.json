@@ -1,0 +1,26 @@
+{
+    "data": "30/01/2020",
+    "testo": "ha disposto (con l\u0027art. 19, comma 1) l\u0027abrogazione dell\u0027intero provvedimento.",
+    "urnModifiche": [
+      {
+        "articoloAggiornante": {
+          "dataPubblicazioneGazzetta": "02/01/2020",
+          "codiceRedazionale": "19G00170",
+          "idNir": "19",
+          "idDettNir": "1",
+          "idDett1Nir": "10",
+          "tipoNir": "0"
+        },
+        "articoloAggiornato": {
+          "dataPubblicazioneGazzetta": "28/03/2013",
+          "codiceRedazionale": "13G00065",
+          "idNir": "4",
+          "idDettNir": "1",
+          "idDett1Nir": "10",
+          "tipoNir": "0"
+        },
+        "urnModificante": "urn:nir:stato:decreto.legislativo:2019-12-05;163#19",
+        "urnModificato": "urn:nir:stato:decreto.legislativo:2013-03-05;26#4"
+      }
+    ]
+}

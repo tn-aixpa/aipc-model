@@ -1,30 +1,13 @@
-name: "Automatic classification of legal documents"
-dataset_structure:
-  year_folder: ${year_number}
-    -month_folder: ${month_number}
-      -file_name: ${year_number}${month_number}${date_number}_VIGENZA_20210607.json
-schema:
-    data: date
-    testo: string
-    urnModifiche": 
-        articoloAggiornante:
-          dataPubblicazioneGazzetta: date
-          codiceRedazionale: string
-          idNir: string
-          idDettNir: string
-          idDett1Nir: string
-          tipoNir: number
-        articoloAggiornato: 
-          dataPubblicazioneGazzetta: date
-          codiceRedazionale: number
-          idNir: number
-          idDettNir: number
-          idDett1Nir: number
-          tipoNir: number
+name: "Automatic classification of legal documents dataset"
+schema: refer to json
+refer_to_data_implementation_example: http://url_example
+dataset_typology: document_database
+constraints: data_schema.json
 data_measurements:
-  metric:
-  comparison:
-  measurements:
+  data_drift:                      #how the current dataset differs from the reference dataset our model was trained on
+    out_of_distribution_vocabulary: 
+  data_quality_check:   ../ai_task_implementation/evidently_monitoring.py           #apply data quality check proactively
+
 
 
 

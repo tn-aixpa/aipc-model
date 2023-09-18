@@ -1,5 +1,5 @@
 
-# Domain Problem for {{ name of the problem within the given context }}
+# Domain Problem for Legal Document classification
 
 <!-- Provide a quick summary of what the domain problem is. -->
 

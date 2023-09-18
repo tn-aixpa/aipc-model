@@ -1,17 +1,14 @@
 name: "Document Classificaton"
 description: "Classifying legal documents"
-domain_problem: #"reference to domain problem card"
-
-
 
 
 nel domain task card deve dichiearar:
 come verificare che i dati sono compatibili
 ai_tasks:
  - task_id: name_of_first_task
+    domain_problem: domain_task_card.yml
     model_card: model_card_id
-    data: reference_to_dataset_card
-    schema del dataset (HF) 
+    data: domain_dataset_card.yml
       input
       output
       data_validation (methods? evidently (test suite/ kpi(customparams)) , techinche custom, extendable)
