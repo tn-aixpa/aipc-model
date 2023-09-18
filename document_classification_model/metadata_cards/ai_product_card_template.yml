@@ -1,0 +1,28 @@
+name: "Document Classificaton"
+description: "Classifying legal documents"
+domain_problem: #"reference to domain problem card"
+
+
+
+
+nel domain task card deve dichiearar:
+come verificare che i dati sono compatibili
+ai_tasks:
+ - task_id: name_of_first_task
+    model_card: model_card_id
+    data: reference_to_dataset_card
+    schema del dataset (HF) 
+      input
+      output
+      data_validation (methods? evidently (test suite/ kpi(customparams)) , techinche custom, extendable)
+        distribution
+    adaptation_techniques:
+      code_implementation: task_text_classification.py
+      data_profiling_when_to_adapt:
+        data_metrics:
+        data_distribution:
+        data_validation
+          quantita
+          labeled data?
+    optimisation_techniques:
+      code_implementation:

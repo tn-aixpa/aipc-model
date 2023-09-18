@@ -1,0 +1,11 @@
+name: "Automatic classification of legal documents"
+dataset_structure:
+  year_folder: ${year_number}
+    -month_folder: ${month_number}
+      -file_name: ${year_number}${month_number}${date_number}_VIGENZA_20210607.json
+measurements_metrics:
+
+
+
+
+  

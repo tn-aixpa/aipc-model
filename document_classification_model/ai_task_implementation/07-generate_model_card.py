@@ -1,7 +1,7 @@
 import model_card_toolkit as mct
 import uuid
 from datetime import date
-# import 06-micro_macro as quant_analysis
+# from 06-micro_macro import macro_f1_score, micor_f1_score, weighted_f1_score
 
 
 toolkit = mct.ModelCardToolkit()
