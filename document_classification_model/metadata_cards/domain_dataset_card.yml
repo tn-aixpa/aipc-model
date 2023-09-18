@@ -1,0 +1,33 @@
+name: "Automatic classification of legal documents"
+dataset_structure:
+  year_folder: ${year_number}
+    -month_folder: ${month_number}
+      -file_name: ${year_number}${month_number}${date_number}_VIGENZA_20210607.json
+schema:
+    data: date
+    testo: string
+    urnModifiche": 
+        articoloAggiornante:
+          dataPubblicazioneGazzetta: date
+          codiceRedazionale: string
+          idNir: string
+          idDettNir: string
+          idDett1Nir: string
+          tipoNir: number
+        articoloAggiornato: 
+          dataPubblicazioneGazzetta: date
+          codiceRedazionale: number
+          idNir: number
+          idDettNir: number
+          idDett1Nir: number
+          tipoNir: number
+data_measurements:
+  metric:
+  comparison:
+  measurements:
+
+
+
+
+
+  
