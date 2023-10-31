@@ -1,0 +1,32 @@
+id: "1_text_classification"
+name: "Text Classification"
+description: "Classifying text according to a specific vocabulary"
+version: 1
+source_code: ai_solution_project
+domain_problem: 1_legislative_text_classification
+tags: text_classification
+implementation: 
+  kind: pipeline
+  reference: ai_solution_project/project_entry_point.py
+inputs:
+  name:
+  specification: 
+outputs:
+  name:
+  specification:
+resources:
+licensing: 
+
+
+ai_tasks:
+ - task_id: text_classification
+    domain_problem: domain_task_card.yml
+    model_card: model_card_id
+    data: domain_dataset_card.yml
+    adaptation_techniques:
+      code_implementation: task_text_classification.py
+      data_profiling_when_to_adapt:
+        data_metrics:
+        data_distribution:
+    optimisation_techniques:
+      code_implementation:

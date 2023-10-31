@@ -1,9 +1,0 @@
-domain_task_name:
-domain_task_description:
-check_data_compatibility_technique:  # verify that thhe current dataset is compatible with the model
-
-- monitoring models that use text data
-- explore issues that affect the performance of the models in production
-- identify in advance data quality issues 
-  - test their impact on the model accuracy
-- explore how to detect model quality decay when applied to unseen data
