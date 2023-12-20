@@ -71,7 +71,7 @@ def compute_metrics(p: EvalPrediction):
     return result
 
 
-def start_train(context: MLClientCtx):
+def start_train(context: MLClientCtx, args):
     """
     Launch the training of the models.
     """

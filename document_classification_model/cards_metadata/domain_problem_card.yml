@@ -4,7 +4,11 @@ domain_problem_description: Automatic classification of legislative acts in the 
 version: 1
 use_case:
 inputs:
+  name:
+  specification: 
 outputs:
+  name:
+  specification:
 service:
 validation: 
 

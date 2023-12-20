@@ -95,7 +95,7 @@ def save_splits(X, masks, y, directory, mlb):
         # Shuffle the splits using the random seed for reproducibility
         X, masks, y = shuffle(X, masks, y, random_state=int(seed))
 
-def process_year(path, tokenizer_name, args):
+def process_year(path, tokenizer_name, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title, summarized):
     """
     Process a year of the dataset.
 
@@ -111,7 +111,7 @@ def process_year(path, tokenizer_name, args):
 
     tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 
-    tokenizer_kwargs = {"padding": "max_length", "truncation": True, "max_length": args.max_length}
+    tokenizer_kwargs = {"padding": "max_length", "truncation": True, "max_length": max_length}
 
     list_inputs = []
     list_labels = []
@@ -120,7 +120,7 @@ def process_year(path, tokenizer_name, args):
     with gzip.open(path, "rt", encoding="utf-8") as file:
         data = json.load(file)
         j = 1
-        if args.get_doc_ids:
+        if get_doc_ids:
             # Only get the document ids, without processing the text. Useful to know which documents go in which split.
             for doc in data:
                 print(f"{datetime.now().replace(microsecond=0)} - {j}/{len(data)}", end="\r")
@@ -138,7 +138,7 @@ def process_year(path, tokenizer_name, args):
                 print(f"{datetime.now().replace(microsecond=0)} - {j}/{len(data)}", end="\r")
                 j += 1
                 text = ""
-                if args.add_mt_do:
+                if add_mt_do:
                     # Add MT and DO labels
                     labels = set(data[doc]["eurovoc_classifiers"]) if "eurovoc_classifiers" in data[doc] else set(data[doc]["eurovoc"])
                     to_add = set()
@@ -153,13 +153,13 @@ def process_year(path, tokenizer_name, args):
                 else:
                     labels = data[doc]["eurovoc_classifiers"] if "eurovoc_classifiers" in data[doc] else data[doc]["eurovoc"]
 
-                if args.title_only:
+                if title_only:
                     text = data[doc]["title"]
                 else:
-                    if args.add_title:
+                    if add_title:
                         text = data[doc]["title"] + " "
                     
-                    if args.summarized:
+                    if summarized:
                         full_text = data[doc]["full_text"]
                         phrase_importance = []
                         i = 0
@@ -172,9 +172,9 @@ def process_year(path, tokenizer_name, args):
                         phrase_importance = sorted(phrase_importance, key=lambda x: x[1], reverse=True)
 
                         # First, we get the most important phrases until the maximum length is reached.
-                        if len(" ".join([full_text[phrase[0]] for phrase in phrase_importance]).split()) > args.max_length:
+                        if len(" ".join([full_text[phrase[0]] for phrase in phrase_importance]).split()) > max_length:
                             backup = deepcopy(phrase_importance)
-                            while len(" ".join([full_text[phrase[0]] for phrase in phrase_importance]).split()) > args.max_length:
+                            while len(" ".join([full_text[phrase[0]] for phrase in phrase_importance]).split()) > max_length:
                                 phrase_importance = phrase_importance[:-1]
                             phrase_importance.append(backup[len(phrase_importance)])
 
@@ -186,14 +186,14 @@ def process_year(path, tokenizer_name, args):
                 
                 text = re.sub(r'\r', '', text)
                 
-                if args.limit_tokenizer:
+                if limit_tokenizer:
                     # Here, the text is cut to the maximum length before being tokenized,
                     # potentially speeding up the process for long documents.
                     inputs_ids = tensor(tokenizer.encode(text, **tokenizer_kwargs))
                 else:
                     inputs_ids = tensor(tokenizer.encode(text))
 
-                if not args.limit_tokenizer:
+                if not limit_tokenizer:
                     document_ct += 1
 
                     # We count the number of unknown tokens and the total number of tokens.
@@ -204,9 +204,9 @@ def process_year(path, tokenizer_name, args):
                         tokens_ct += 1
 
                     # If the input is over the maximum length, we cut it and increment the count of big documents.
-                    if len(inputs_ids) > args.max_length:
+                    if len(inputs_ids) > max_length:
                         big_document_ct += 1
-                        inputs_ids = inputs_ids[:args.max_length]
+                        inputs_ids = inputs_ids[:max_length]
 
                 list_inputs.append(inputs_ids)
                 list_labels.append(labels)
@@ -219,7 +219,7 @@ def process_year(path, tokenizer_name, args):
         print("No documents found in the dataset.")
         to_print = ""
     else:
-        if not args.limit_tokenizer and not args.get_doc_ids:
+        if not limit_tokenizer and not get_doc_ids:
             to_print = f"Dataset stats: - total documents: {document_ct}, big documents: {big_document_ct}, ratio: {big_document_ct / document_ct * 100:.4f}%"
             to_print += f"\n               - total tokens: {tokens_ct}, unk tokens: {unk_ct}, ratio: {unk_ct / tokens_ct * 100:.4f}%"
             print(to_print)
@@ -228,7 +228,7 @@ def process_year(path, tokenizer_name, args):
 
     return list_inputs, list_masks, list_labels, to_print
 
-def process_datasets(data_path, directory, tokenizer_name):
+def process_datasets(data_path, directory, tokenizer_name, years, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title, summarized):
     """
     Process the datasets and save them in the specified directory.
 
@@ -244,37 +244,37 @@ def process_datasets(data_path, directory, tokenizer_name):
     list_years = []
 
     # If no years are specified, process all the downloaded years depending on the arguments.
-    args.summarized = False
-    if args.years == "all":
-        args.years = [year for year in os.listdir(os.path.join(data_path, directory))
+    summarized = False
+    if years == "all":
+        years = [year for year in os.listdir(os.path.join(data_path, directory))
                       if os.path.isfile(os.path.join(data_path, directory, year))
                       and year.endswith(".json.gz")]
     else:
-        args.years = PageRange(args.years).pages
+        years = PageRange(years).pages
         files_in_directory = [file for file in os.listdir(os.path.join(data_path, directory))
                               if file.endswith(".json.gz")]
 
         are_any_summarized = ["sum" in file for file in files_in_directory]
         if any(are_any_summarized):
             sum_type = files_in_directory[are_any_summarized.index(True)].split("_", 1)[1]
-            args.years = [str(year) + f"_{sum_type}" for year in args.years]
+            years = [str(year) + f"_{sum_type}" for year in years]
         else:
-            args.years = [str(year) + ".json.gz" for year in args.years]
+            years = [str(year) + ".json.gz" for year in years]
         
-    args.years = sorted(args.years)
+    years = sorted(years)
     
     # Test if the file is summarized or not
-    with gzip.open(os.path.join(data_path, directory, args.years[0]), "rt", encoding="utf-8") as file:
+    with gzip.open(os.path.join(data_path, directory, years[0]), "rt", encoding="utf-8") as file:
         data = json.load(file)
         if "importance" in data[tuple(data.keys())[0]]:
-            args.summarized = True
+            summarized = True
         del data
 
-    print(f"Files to process: {', '.join(args.years)}\n")
+    print(f"Files to process: {', '.join(years)}\n")
 
-    for year in args.years:
+    for year in years:
         print(f"Processing file: '{year}'...")
-        year_inputs, year_masks, year_labels, year_stats = process_year(os.path.join(data_path, directory, year), tokenizer_name, args)
+        year_inputs, year_masks, year_labels, year_stats = process_year(os.path.join(data_path, directory, year), tokenizer_name, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title, summarized)
         
         list_inputs += year_inputs
         list_masks += year_masks
@@ -302,7 +302,7 @@ def process_datasets(data_path, directory, tokenizer_name):
 
     save_splits(X, masks, y, directory, mlb)
 
-def preprocessdata(context: MLClientCtx, models="config/models.yml", data_path="data/", langs="it"):
+def preprocessdata(context: MLClientCtx, data_path="data/", langs="it", years="all", ):
     """
     Load the configuration file and process the data.
     """
