@@ -27,7 +27,7 @@ with open("config/mt_labels_position.json", "r") as fp:
 with open("config/mt_labels.json", "r", encoding="utf-8") as file:
     mt_labels = json.load(file)
 
-def save_splits(X, masks, y, directory, mlb):
+def save_splits(X, masks, y, directory, mlb, data_path):
     """
     Save the splits of the dataset.
     
@@ -62,24 +62,24 @@ def save_splits(X, masks, y, directory, mlb):
         to_print = f"{seed} - Splitted the documents in - train: {train_X.shape[0]}, dev: {dev_X.shape[0]}, test: {test_X.shape[0]}"
         print(to_print)
 
-        with open(os.path.join(args.data_path, directory, "stats.txt"), "a+") as f:
+        with open(os.path.join(data_path, directory, "stats.txt"), "a+") as f:
             f.write(to_print + "\n")
 
-        if not os.path.exists(os.path.join(args.data_path, directory, f"split_{seed}")):
-            os.makedirs(os.path.join(args.data_path, directory, f"split_{seed}"))
+        if not os.path.exists(os.path.join(data_path, directory, f"split_{seed}")):
+            os.makedirs(os.path.join(data_path, directory, f"split_{seed}"))
 
         # Save the splits
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "train_X.npy"), train_X)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "train_mask.npy"), train_mask)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "train_y.npy"), train_y)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "train_X.npy"), train_X)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "train_mask.npy"), train_mask)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "train_y.npy"), train_y)
 
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "dev_X.npy"), dev_X)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "dev_mask.npy"), dev_mask)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "dev_y.npy"), dev_y)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "dev_X.npy"), dev_X)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "dev_mask.npy"), dev_mask)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "dev_y.npy"), dev_y)
 
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "test_X.npy"), test_X)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "test_mask.npy"), test_mask)
-        np.save(os.path.join(args.data_path, directory, f"split_{seed}", "test_y.npy"), test_y)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "test_X.npy"), test_X)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "test_mask.npy"), test_mask)
+        np.save(os.path.join(data_path, directory, f"split_{seed}", "test_y.npy"), test_y)
 
         # Save the counts of each label, useful for weighted loss
         sample_labs = mlb.inverse_transform(train_y)
@@ -89,7 +89,7 @@ def save_splits(X, masks, y, directory, mlb):
             for label in sample:
                 labs_count["labels"][label] += 1
         
-        with open(os.path.join(args.data_path, directory, f"split_{seed}", "train_labs_count.json"), "w") as fp:
+        with open(os.path.join(data_path, directory, f"split_{seed}", "train_labs_count.json"), "w") as fp:
             json.dump(labs_count, fp)
 
         # Shuffle the splits using the random seed for reproducibility
@@ -228,7 +228,7 @@ def process_year(path, tokenizer_name, max_length, limit_tokenizer, get_doc_ids,
 
     return list_inputs, list_masks, list_labels, to_print
 
-def process_datasets(data_path, directory, tokenizer_name, years, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title, summarized):
+def process_datasets(data_path, directory, tokenizer_name, years, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title):
     """
     Process the datasets and save them in the specified directory.
 
@@ -292,25 +292,47 @@ def process_datasets(data_path, directory, tokenizer_name, years, max_length, li
     masks = pad_sequence(list_masks, batch_first=True, padding_value=0).numpy()
 
     # Save the MultiLabelBinarizer.
-    with open(os.path.join(args.data_path, directory, "mlb_encoder.pickle"), "wb") as pickle_fp:
+    with open(os.path.join(data_path, directory, "mlb_encoder.pickle"), "wb") as pickle_fp:
         pickle.dump(mlb, pickle_fp, protocol=pickle.HIGHEST_PROTOCOL)
     
-    if not args.limit_tokenizer:
-        with open(os.path.join(args.data_path, directory, "stats.txt"), "w") as stats_fp:
+    if not limit_tokenizer:
+        with open(os.path.join(data_path, directory, "stats.txt"), "w") as stats_fp:
             for year, year_stats in zip(list_years, list_stats):
                 stats_fp.write(f"Year: {year}\n{year_stats}\n\n")
 
     save_splits(X, masks, y, directory, mlb)
 
-def preprocessdata(context: MLClientCtx, data_path="data/", langs="it", years="all", ):
+def preprocessdata(
+        context: MLClientCtx, 
+        data_path: str = "data/", 
+        langs="it", 
+        years: str = "all",
+        seeds_value: str = 110,
+        max_length: int = 512,
+        limit_tokenizer: bool = False,
+        get_doc_ids:bool = False,
+        add_mt_do:bool = False,
+        title_only:bool = False,
+        add_title:bool = False
+        ):
     """
     Load the configuration file and process the data.
+    :param langs: Languages to be processed, separated by a comme (e.g. en,it). Write 'all' to process all the languages.
+    :param data_path: Path to the data to process.
+    :param years: Year range to be processed, separated by a minus (e.g. 2010-2020 will get all the years between 2010 and 2020 included) or individual years separated by a comma (to use a single year, simply type it normally like '2016'). Write 'all' to process all the files in the folder.
+    :param seeds: Seeds to be used for the randomization and creating the data splits, separated by a comma (e.g. 110,221).
+    :param add_title: Add the title to the text.
+    :param title_only: Use only the title as input.
+    :param max_length: Maximum number of words of the text to be processed.
+    :param limit_tokenizer: Limit the tokenizer length to the maximum number of words. This will remove the statistics for the documents length.
+    :param add_mt_do: Add the MicroThesaurus and Domain labels to be predicted.
+    :param get_doc_ids: Get the document ids that are used in the splits. NOTE: only use for debugging.
     """
     with open("config/models.yml", "r") as fp:
         config = yaml.safe_load(fp)
     
     global seeds
-    #seeds = args.seeds.split(",")
+    seeds = seeds_value.split(",")
 
     print(f"Tokenizers config:\n{format(config)}")
     
@@ -323,20 +345,9 @@ def preprocessdata(context: MLClientCtx, data_path="data/", langs="it", years="a
         lang = directory
         print(f"Lang: '{lang}', Tokenizer: '{config[lang]}'")
 
-        process_datasets(data_path, directory, config[lang])
+        process_datasets(data_path, directory, config[lang], years, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument("--langs", type=str, default="it", help="Languages to be processed, separated by a comme (e.g. en,it). Write 'all' to process all the languages.")
-    parser.add_argument("--data_path", type=str, default="data/", help="Path to the data to process.")
-    parser.add_argument("--years", type=str, default="all", help="Year range to be processed, separated by a minus (e.g. 2010-2020 will get all the years between 2010 and 2020 included) or individual years separated by a comma (to use a single year, simply type it normally like '2016'). Write 'all' to process all the files in the folder.")
-    parser.add_argument("--seeds", type=str, default="110", help="Seeds to be used for the randomization and creating the data splits, separated by a comma (e.g. 110,221).")
-    parser.add_argument("--add_title", action="store_true", default=False, help="Add the title to the text.")
-    parser.add_argument("--title_only", action="store_true", default=False, help="Use only the title as input.")
-    parser.add_argument("--max_length", type=int, default=512, help="Maximum number of words of the text to be processed.")
-    parser.add_argument("--limit_tokenizer", action="store_true", default=False, help="Limit the tokenizer length to the maximum number of words. This will remove the statistics for the documents length.")
-    parser.add_argument("--add_mt_do", action="store_true", default=False, help="Add the MicroThesaurus and Domain labels to be predicted.")
-    parser.add_argument("--get_doc_ids", action="store_true", default=False, help="Get the document ids that are used in the splits. NOTE: only use for debugging.")
-    args = parser.parse_args()
+    from jsonargparse import CLI
 
-    preprocessdata()
+    CLI(preprocessdata)
