@@ -1,0 +1,36 @@
+{
+"resources": [
+  {
+      "format": "json",
+      "schema": {
+          "primaryKey": "codice_anagrafe_generale",
+          "fields": [
+              {
+                  "name": "id",
+                  "description": "The id of the legislative act",
+                  "type": "int",
+                  "constraints": {
+                      "maxLength": 512
+                  }
+              },
+              {
+                  "name": "labels",
+                  "description": "The categories to which the legislative act is assigned",
+                  "type": "string",
+                  "constraints": {
+                    "enum": ["19G00170", "13G00065"]
+                }                    
+              },
+              {
+                  "name": "text",
+                  "description": "The body of the legislative act",
+                  "type": "string",
+                  "constraints": {
+                      "unique": false
+                    }
+              }
+          ]
+        }
+    }
+  ]
+}
