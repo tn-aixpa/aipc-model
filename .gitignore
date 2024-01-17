@@ -3,3 +3,6 @@ input-folder/
 output-folder/
 ipzs/
 wandb/
+.ipynb_checkpoints/
+
+__pycache__/
