@@ -1,7 +1,7 @@
 description: ""
 runtime: evidently
 specification:
-  implementation: drift-detection.py
+  implementation: 07-drift-detection.py
 input_data:
   - 
 reference_data:

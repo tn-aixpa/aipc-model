@@ -16,6 +16,12 @@ from evidently.report import Report
 from evidently.metric_preset import ColumnDriftMetric
 from evidently.metrics import TextDescriptorsDriftMetric
 
+
+def run_drift_validation():
+    pass
+
+
+
 data_drift_report = Report(
     metrics=[
         ColumnDriftMetric('labels'),
