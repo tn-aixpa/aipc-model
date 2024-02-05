@@ -1,10 +1,11 @@
+kind: "drift_detection"
 description: ""
 runtime: evidently
 specification:
-  implementation: 07-drift-detection.py
-input_data:
-  - 
-reference_data:
-  - name: 
-    reference: https://drive.usercontent.google.com/u/0/uc?id=11xy6a6cbteD2TG9r3CU16ysO50xrqZf2&export=download
+  implementation: drift_detection_evidently
+  package: ai_task_implementation.pipeline
+  handler: build_drift_detection_test
+# it is meant to be a data item output from the preceeding step of the pipeline
+input_data: /home/albana/Desktop/Projects/AIxPA/ai_product_card_templates/document_classification_model/fasttext/ai_data_validation/current_data.json 
+reference_data: https://drive.usercontent.google.com/u/0/uc?id=11xy6a6cbteD2TG9r3CU16ysO50xrqZf2&export=download
 

@@ -1,7 +1,7 @@
 import pandas as pd
 
 from evidently import ColumnMapping
-from evidently.metrics import DataDriftPreset
+from evidently.metric_preset import DataDriftPreset
 from evidently.report import Report
 
 from evidently.test_suite import TestSuite
