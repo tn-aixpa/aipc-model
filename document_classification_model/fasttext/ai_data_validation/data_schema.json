@@ -3,7 +3,6 @@
   {
       "format": "json",
       "schema": {
-          "primaryKey": "codice_anagrafe_generale",
           "fields": [
               {
                   "name": "id",
