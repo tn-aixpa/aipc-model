@@ -1,0 +1,25 @@
+id: 1
+name: "The initial ipzs dataset"
+
+description: "All the legislative acts in the General Series published from 1988 to 2021."
+type: "text data" # image, video, audio, tabular
+dataset_format: json # csv
+reference_taxonomy: ""
+tags: "eurovoc, text_classification"
+version: 0.1
+refer_to_data_implementation_example:
+constraints:  
+schema: 
+  runtime:
+  definition:  
+transformation: 
+    - implementation: 01-preprocessing_handlers.py
+      handler: parse_ipzs
+    - implementation: 02-parsing_handlers.py
+      handler: parse
+    - implementation: 03-extracting_test_handlers.py
+      handler: extract_test_sets
+    - implementation: 04-saving_data_handlers.py
+      handler: save_data
+    - implementation: 05-filtering_handlers.py
+
