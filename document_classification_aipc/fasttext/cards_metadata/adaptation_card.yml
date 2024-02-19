@@ -1,0 +1,8 @@
+description: "Adaptation specifications for finetuning BERT model"
+runtime: 
+specification:
+  implementation: ../ai_task_implementation/train.py
+compliance:
+base_opensource_model: 
+prepare_local_dataset:
+finetune_script:

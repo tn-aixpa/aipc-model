@@ -1,0 +1,46 @@
+kind: project
+metadata:
+  name: bert-classification
+  created: '2024-02-12T13:55:55.577194'
+spec:
+  params:
+    requirements_file: ./requirements.txt
+  functions:
+  - url: preprocess.py
+    name: pre-processing
+    kind: job
+    image: mlrun/mlrun
+    handler: preprocessdata
+  - url: evaluate.py
+    name: evaluate
+    kind: job
+    image: mlrun/mlrun
+    handler: start_evaluate
+  - url: train.py
+    name: train
+    kind: job
+    image: mlrun/mlrun
+    handler: start_train
+  - url: data-prep.py
+    name: data-prep
+    kind: job
+    image: mlrun/mlrun
+    handler: breast_cancer_generator
+  - url: preprocess.py
+    name: preprocess
+    kind: job
+    image: mlrun/mlrun
+    handler: preprocessdata
+  workflows: []
+  artifacts: []
+  conda: ''
+  source: ''
+  desired_state: online
+  default_image: .mlrun-project-image-bert-classification
+  build:
+    image: .mlrun-project-image-bert-classification
+    commands: []
+    requirements: []
+  custom_packagers: []
+status:
+  state: online

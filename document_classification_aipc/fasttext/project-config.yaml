@@ -1,0 +1,34 @@
+kind: project
+metadata:
+  name: drift-detection
+  created: '2024-02-06T10:06:02.262887'
+spec:
+  functions:
+  - url: data-prep.py
+    name: data-prep
+    kind: job
+    image: mlrun/mlrun
+    handler: breast_cancer_generator
+  - url: run_drift_detection.py
+    name: run-drift-detection
+    kind: job
+    image: mlrun/mlrun
+    handler: run_drift_detection
+    requirements:
+    - evidently
+  workflows: []
+  artifacts: []
+  conda: ''
+  source: ''
+  desired_state: online
+  default_image: aipc_image
+  build:
+    image: aipc_image
+    base_image: mlrun/mlrun
+    commands: []
+    with_mlrun: false
+    requirements:
+    - evidently
+  custom_packagers: []
+status:
+  state: online

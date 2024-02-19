@@ -1,0 +1,25 @@
+kind: "model_definition"
+id: text_classification_fasttext
+name: Text Classification with FastText
+description: Assign legal documents to more than one categories
+tags:
+  - text_classification
+  - fasttext
+version: 0.1
+license: 
+  name: Apache 2.0
+  link: https://www.apache.org/licenses/LICENSE-2.0
+library_name: fasttext
+training_data: https://drive.usercontent.google.com/u/0/uc?id=11xy6a6cbteD2TG9r3CU16ysO50xrqZf2&export=download
+evaluation_data:
+
+base_model: 
+metrics:
+  - type:
+    value:
+    name:
+    args:
+  - type:
+    value:
+    name:
+    args:

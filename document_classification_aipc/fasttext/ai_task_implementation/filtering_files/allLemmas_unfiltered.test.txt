@@ -1,0 +1,4 @@
+__label__A6040	conversione in legge , con modificazione , di il decreto -legge 22 marzo 2021 , numero 41 , recare misura urgente in materia di sostegno a il impresa e a il operatore economico , di lavoro , salute e servizio territoriale , connettere a il emergenza da covid-19 ( 21g00080 )
+__label__A6040	misura urgente relativo a il emergenza epidemiologico da covid-19 ( 21g00078 )
+__label__A6040	conversione in legge , con modificazione , di il decreto -legge 13 marzo 2021 , numero 30 , recare misura urgente per fronteggiare il diffusione di il covid-19 e intervento di sostegno per lavoratore con figlio minore in didattica a distanza o in quarantena ( 21g00071 )
+__label__A6040	misura urgente in materia di sostegno a il impresa e a il operatore economico , di lavoro , salute e servizio territoriale , connettere a il emergenza da covid-19 ( 21g00049 )

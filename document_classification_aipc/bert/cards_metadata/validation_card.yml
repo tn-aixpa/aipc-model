@@ -1,0 +1,8 @@
+description: ""
+runtime: evidently
+specification:
+  implementation: drift-detection.py
+input_data:
+  - 
+reference_data: https://drive.usercontent.google.com/u/0/uc?id=11xy6a6cbteD2TG9r3CU16ysO50xrqZf2&export=download
+

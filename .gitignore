@@ -4,6 +4,7 @@ output-folder/
 ipzs/
 wandb/
 .ipynb_checkpoints/
+data/
 
 __pycache__/
 python-version
