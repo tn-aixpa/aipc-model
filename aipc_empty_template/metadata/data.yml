@@ -1,0 +1,26 @@
+- id:                     # id of the dataset 
+ 	name:                   # name of the dataset
+  description:            # description of the dataset
+  type:                   # macro category of data it contains (text, image, video, audio, tabular, ...)
+  format:                 # the format in which the data is saved csv, json, xml, ...
+  tags:                   # label the domain dataset so that to be easily findable and accessible
+  version:                # the version of the dataset
+  sample:                 # reference the dataset implementation example. inline (local) / url (remote) 
+  schema:                 # reference to the schema of the dataset
+    type:                 # Frictionless, XSD, JSON SChema,
+    reference:            # inline / url
+    implementation:       # example of implementation
+      runtime:            # the execution environment (python, ...)
+      source:             # reference to the implementation folder src/... 
+      handler:            # name of the function that contains the implementation
+      requirements:       # particular dependencies the dataset schema specification may need (optional)
+      resources:          # particular reosurces to be used for schema implementation(optional)
+  constraints:
+    - type:               # specific constraints the dataset may need to fullfill (Frictionless, GreatExpt, Evidently, ....)
+      definition:         # inline / url (local/remote)
+      implementation: 
+      runtime:            # python
+      source:             # reference to src/... 
+      handler:            # nome della function
+      requirements:       # 
+      resources:          # 
