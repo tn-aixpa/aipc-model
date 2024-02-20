@@ -20,7 +20,7 @@
       definition:         # reference to the definition of the contraint (local/remote)
       implementation:     # reference to the implementation of the contraint inside the folder src/
         runtime:          # the execution environment (python)
-        source:           # reference to the implementation of the contraint inside the folder src/
+        source:           # reference to the implementation of the constraint inside the folder src/
         handler:          # name of the function that contains the implementation
         requirements:     # particular dependencies the constraint specification may need (optional)
         resources:        # particular resources to be used for constraint implementation (optional)
