@@ -11,8 +11,4 @@ refer_to_data_implementation_example:
 constraints:  
 schema: 
   runtime:
-  definition:  
-
-
-
-
+  definition:  ../ai_data_validation/data_schema.json

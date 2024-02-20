@@ -1,7 +1,7 @@
 import sys
 import os
 import importlib.util
-from ai_task_implementation.pipeline import utils
+from ai_task_implementation import utils
 
 def run_drift_detection():
     validation_card_metadata = utils.load_validation_card_specifications()
@@ -24,14 +24,20 @@ def run_drift_detection():
 def data_quality_check():
     data_card_metadata = utils.load_data_card_specifications()
 
-    
+def train_model():
+    pass
+
+def evaluate_model():
+    pass
 
 
 if __name__=="__main__":
     action = sys.argv[1]
     actions = {
         "run_drift_detection": run_drift_detection,
-        "data_quality_check": data_quality_check
+        "data_quality_check": data_quality_check,
+        "train_model": train_model,
+        "evaluate_model": evaluate_model
     }
     actions[action]()
 

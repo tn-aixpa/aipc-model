@@ -5,6 +5,7 @@ ipzs/
 wandb/
 .ipynb_checkpoints/
 data/
+models/
 
 __pycache__/
 python-version

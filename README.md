@@ -11,6 +11,12 @@ Moreover, the design of these cards will enable **customization** and **extendab
 
 The main considerations - social impact, reproducibility, and evaluation - form the main aspects of our templates.
 
+
+# Scaffolding 
+
+The primary contribution of the AIPC framework centers around facilitating swift AI adoption by providing scaffolding strategies.
+
+
 ![alt text](AI_Cards-General_Description.png)
 ---------------------------------------------------------------------------------------------------------
 

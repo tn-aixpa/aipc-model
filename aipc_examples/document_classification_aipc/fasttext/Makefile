@@ -10,3 +10,12 @@ train_model:
 
 evaluate_model:
 	python aipc_plain_execution.py evaluate_model
+
+	
+
+
+
+	- template for data card
+	
+	
+	scaffolding
