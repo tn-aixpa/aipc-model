@@ -8,19 +8,19 @@
   sample:                 # reference the dataset implementation example. inline (local) / url (remote) 
   schema:                 # reference to the schema of the dataset
     type:                 # Frictionless, XSD, JSON SChema,
-    reference:            # inline / url
+    reference:            # reference to the schema definition (inline / url)
     implementation:       # example of implementation
       runtime:            # the execution environment (python, ...)
-      source:             # reference to the implementation folder src/... 
+      source:             # reference to the implementation file inside the folder src/... 
       handler:            # name of the function that contains the implementation
       requirements:       # particular dependencies the dataset schema specification may need (optional)
       resources:          # particular reosurces to be used for schema implementation(optional)
   constraints:
-    - type:               # specific constraints the dataset may need to fullfill (Frictionless, GreatExpt, Evidently, ....)
-      definition:         # inline / url (local/remote)
-      implementation: 
-      runtime:            # python
-      source:             # reference to src/... 
-      handler:            # nome della function
-      requirements:       # 
-      resources:          # 
+    - type:               # specific constraints the dataset may need to fulfill (Frictionless, GreatExpt, Evidently, ....)
+      definition:         # reference to the definition of the contraint (local/remote)
+      implementation:     # reference to the implementation of the contraint inside the folder src/
+        runtime:          # the execution environment (python)
+        source:           # reference to the implementation of the contraint inside the folder src/
+        handler:          # name of the function that contains the implementation
+        requirements:     # particular dependencies the constraint specification may need (optional)
+        resources:        # particular resources to be used for constraint implementation (optional)
