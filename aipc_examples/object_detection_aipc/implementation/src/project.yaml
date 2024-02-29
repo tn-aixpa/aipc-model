@@ -1,0 +1,63 @@
+kind: project
+metadata:
+  name: fasttext-aipc
+  created: '2024-02-27T11:50:07.097367'
+spec:
+  params:
+    base_image: mlrun/mlrun
+    requirements_file: ./requirements.txt
+    default_image: mlrun/mlrun
+    metadata_path: ../../metadata/
+    source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/document_classification_aipc/fasttext
+  functions:
+  - url: ./functions/model_training.py
+    name: training
+    kind: job
+    handler: train
+  - url: ./functions/model_evaluation.py
+    name: evaluation
+    kind: job
+    handler: evaluate
+  - url: ./preprocessing/01-preprocessing.py
+    name: pre-processing
+    kind: job
+    handler: parse_ipzs
+  - url: ./preprocessing/02-parsing.py
+    name: parsing
+    kind: job
+    handler: parse
+  - url: ./preprocessing/03-extracting_test.py
+    name: extracting-test
+    kind: job
+    handler: extract_test_sets
+  - url: ./preprocessing/04-saving_data.py
+    name: saving-data
+    kind: job
+    handler: save_data
+  - url: ./preprocessing/05-filtering.py
+    name: filtering
+    kind: job
+    handler: filter
+  - url: functions/model_training.py
+    name: model-legal-acts-classification-fasttext
+    kind: job
+    handler: train
+  workflows:
+  - engine: kfp
+    path: ./workflows/main_workflow.py
+    name: classification
+    handler: classification_pipeline
+  artifacts: []
+  conda: ''
+  source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/document_classification_aipc/fasttext
+  load_source_on_run: true
+  desired_state: online
+  default_image: mlrun/mlrun
+  build:
+    image: mlrun/mlrun
+    base_image: mlrun/mlrun
+    commands: []
+    requirements: []
+  custom_packagers: []
+status:
+  state: online

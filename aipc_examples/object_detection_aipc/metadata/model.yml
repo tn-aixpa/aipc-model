@@ -1,0 +1,26 @@
+models:
+   - name:                    "model-legal-acts-classification-fasttext" # name of the model
+     description:             "" # description of the model
+     tags:                    "fasttext, text classification, legal acts clasification" # label the model to be easily findable and accessible
+     version:                 "" # the version of the dataset
+     framework:               "fasttext" # the primary framework the model is trained on (fasttext, pytorch, ....)
+     artifact:                "../implementation/models/allTokens_unfiltered_model.bin" # the path/url the model is being output (implementation/models)
+     training:
+       data:                   
+         id:                  "data_legal_acts_classification_fasttext" # the id of the dataset taken from data.yml
+         reference:            # (local/remote) (array of references?)
+       implementation:         
+         runtime:             "python" # the execution environment (python)
+         source:              "functions/model_training.py" # reference to the implementation of the training procedure inside implementation/src/
+         handler:             "train" # the name of the function to call
+         requirements:         # particular dependencies the model training depends on
+         resources:            # particular resources the model training depends on
+     evaluation:
+       - type:                "python" # supported compliance library for the evaluations to be applied to the model  Evidently, Custom script ....
+         definition:           # inline / url (local/remote)
+         implementation:       
+           runtime:           "python" # the execution environment (python)
+           source:            "functions/model_evaluation.py" # reference to the implementation of the compliance procedure inside implementation/src/
+           handler:           "evaluate" # the name of the function call
+           requirements:       # particular dependencies the compliance execution depends on
+           resources:          # particular resources the compliance depends on 

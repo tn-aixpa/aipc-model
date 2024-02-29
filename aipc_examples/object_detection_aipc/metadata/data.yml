@@ -1,0 +1,28 @@
+- name:                  "data_legal_acts_classification_fasttext" # name of the dataset
+  description:           "" # description of the dataset
+  type:                  "text" # macro category of data it contains (text, image, video, audio, tabular, ...)
+  format:                "json" # the format in which the data is saved csv, json, xml, ...
+  tags:                  "text classification, legal acts classification" # label the domain dataset so that to be easily findable and accessible
+  version:               "0.1" # the version of the dataset
+  sample:                "https://drive.usercontent.google.com/u/0/uc?id=11xy6a6cbteD2TG9r3CU16ysO50xrqZf2&export=download" # reference the dataset implementation example. inline (local) / url (remote) 
+  schema:                # reference to the schema of the dataset
+    type:                "frictionless" # Frictionless, XSD, JSON SChema,
+    reference:           "../implementation/schemas/data_schema.json" # reference to the schema definition (inline / url)
+    implementation:      # example of implementation
+      runtime:           "python" # the execution environment (python, ...)
+      source:            "../implementation/src/functions/schema_validation.py" # reference to the implementation file inside the folder src/... 
+      handler:           "validate_resource" # name of the function that contains the implementation
+      requirements:      "" # particular dependencies the dataset schema specification may need (optional)
+      resources:         "" # particular reosurces to be used for schema implementation(optional)
+  constraints:
+    - type:              "evidently" # specific constraints the dataset may need to fulfill (Frictionless, GreatExpt, Evidently, ....)
+      definition:        "" # reference to the definition of the contraint (local/remote)
+      implementation:    "" # reference to the implementation of the contraint inside the folder src/
+        runtime:         "python" # the execution environment (python)
+        source:          "" # reference to the implementation of the constraint inside the folder src/
+        handler:         "" # name of the function that contains the implementation
+        requirements:    "" # particular dependencies the constraint specification may need (optional)
+        resources:       "" # particular resources to be used for constraint implementation (optional)
+        
+        
+# TODO add constraints [check number of rows]

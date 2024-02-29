@@ -1,0 +1,20 @@
+ - id:
+   name:
+   description:
+   tags:
+   version:
+   framework: 
+     reference_model:
+   implementation:
+     runtime: 
+     source: 
+     handler:
+     # ... (requirements, resources, ...)
+   compliance:
+    - type:
+      definition:
+      implementation: 
+    runtime: 
+    source: 
+    handler: 
+    # ... (requirements, resources, ...)
