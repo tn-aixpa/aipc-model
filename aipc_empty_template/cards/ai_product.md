@@ -1,13 +1,9 @@
 
-# AI Product Card for {{ pretty_name | default("Dataset Name", true) }}
+# AI Product Card for {{ pretty_name | default("AI Product Name", true) }}
 
 ## AI Product Description
 
-- **Homepage:** {{ homepage_url | default("", true)}}
-- **Repository:** {{ repo_url | default("", true)}}
-- **Paper:** {{ paper_url | default("", true)}}
-- **Leaderboard:** {{ leaderboard_url | default("", true)}}
-- **Point of Contact:** {{ point_of_contact | default("", true)}}
+
 
 ### AI Product Components
 
