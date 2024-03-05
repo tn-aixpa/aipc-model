@@ -35,14 +35,8 @@ models:
            requirements:       # particular dependencies the compliance execution depends on
            resources:          # particular resources the compliance depends on 
         metrics:
-          - macro_f1_score:
-              min_val:  
-              max_val:  
-          - micro_f1_score:
-              min_val:  
-              max_val:  
-          weighted_f1_score:
-              min_val:  
-              max_val:  
+          f1_score:
+            min_val:  
+            max_val: 
     monitoring:
       paramteters:
