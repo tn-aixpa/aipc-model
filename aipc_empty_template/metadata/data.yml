@@ -7,11 +7,7 @@
   instances:
       - description:
         uri:               # reference the dataset implementation example. inline (local) / url (remote) 
-
-  schema:                # reference to the schema of the dataset
-    type:                "" # Frictionless, XSD, JSON SChema,
-    reference:           "" # reference to the schema definition (inline / url)
-    
+  
   validation:
     - type:              "" # specific constraints the dataset may need to fulfill (Frictionless, GreatExpt, Evidently, ....)
       definition:        "" # reference to the definition of the contraint (local/remote)
@@ -29,6 +25,4 @@
         handler:         "" # name of the function that contains the implementation
         requirements:    "" # particular dependencies the dataset schema specification may need (optional)
         resources:       "" # particular reosurces to be used for schema implementation(optional)
-        
-        
-# TODO add constraints [check number of rows]
+      

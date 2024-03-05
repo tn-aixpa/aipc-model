@@ -13,30 +13,33 @@ models:
          metrics:   
            
      training:
+       output_dir:            "" # the path/url the model is being output (implementation/models)
        data:                   
          id:                  "" # the id of the dataset taken from data.yml
-         reference:            # (local/remote) (array of references?)
+         reference:              # (local/remote) (array of references?)
        implementation:         
          runtime:             "" # the execution environment (python)
          source:              "" # reference to the implementation of the training procedure inside implementation/src/
          handler:             "" # the name of the function to call
-         requirements:         # particular dependencies the model training depends on
-         resources:            # particular resources the model training depends on
+         requirements:           # particular dependencies the model training depends on
+         resources:              # particular resources the model training depends on
        parameters: 
           learning_rate:       ""
           epochs:              ""
      evaluation:
        - type:                "" # supported compliance library for the evaluations to be applied to the model  Evidently, Custom script ....
-         definition:           # inline / url (local/remote)
+         definition:             # inline / url (local/remote)
          implementation:       
            runtime:           "" # the execution environment (python)
            source:            "" # reference to the implementation of the compliance procedure inside implementation/src/
            handler:           "" # the name of the function call
-           requirements:       # particular dependencies the compliance execution depends on
-           resources:          # particular resources the compliance depends on 
+           requirements:         # particular dependencies the compliance execution depends on
+           resources:            # particular resources the compliance depends on 
         metrics:
           f1_score:
             min_val:  
             max_val: 
-    monitoring:
-      paramteters:
+     inference:
+       parameters:
+     monitoring:
+       paramteters:
