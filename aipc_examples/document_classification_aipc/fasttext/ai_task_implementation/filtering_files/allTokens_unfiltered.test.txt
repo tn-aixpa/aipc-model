@@ -1,4 +1,0 @@
-__label__A6040	conversione in legge , con modificazioni , del decreto -legge 22 marzo 2021 , n. 41 , recante misure urgenti in materia di sostegno alle imprese e agli operatori economici , di lavoro , salute e servizi territoriali , connesse all' emergenza da covid-19 ( 21g00080 )
-__label__A6040	misure urgenti relative all' emergenza epidemiologica da covid-19 ( 21g00078 )
-__label__A6040	conversione in legge , con modificazioni , del decreto -legge 13 marzo 2021 , n. 30 , recante misure urgenti per fronteggiare la diffusione del covid-19 e interventi di sostegno per lavoratori con figli minori in didattica a distanza o in quarantena ( 21g00071 )
-__label__A6040	misure urgenti in materia di sostegno alle imprese e agli operatori economici , di lavoro , salute e servizi territoriali , connesse all' emergenza da covid-19 ( 21g00049 )

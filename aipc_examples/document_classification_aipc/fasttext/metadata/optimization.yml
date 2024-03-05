@@ -11,8 +11,7 @@
     runtime: 
     source: 
     handler: 
-    requirements:
-    resources:
+    # ... (requirements, resources, ...)
 
   compliance:
     - type: 
@@ -21,5 +20,4 @@
     runtime: 
     source: 
     handler: 
-    requirements:
-    resources:
+    # ... (requirements, resources, ...)

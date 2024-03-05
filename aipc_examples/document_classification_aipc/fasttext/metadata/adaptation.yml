@@ -9,8 +9,7 @@
      runtime: 
      source: 
      handler:
-     requirements:
-    resources:
+     # ... (requirements, resources, ...)
    compliance:
     - type:
       definition:
@@ -18,5 +17,4 @@
     runtime: 
     source: 
     handler: 
-    requirements:
-    resources:
+    # ... (requirements, resources, ...)

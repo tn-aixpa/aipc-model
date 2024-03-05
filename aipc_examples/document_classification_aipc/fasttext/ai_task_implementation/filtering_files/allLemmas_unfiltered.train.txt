@@ -1,8 +1,0 @@
-__label__A6040	misura urgente connettere a il emergenza da covid-19 , per il impresa , il lavoro , il giovane , il salute e il servizio territoriale ( 21g00084 )
-__label__A6040	misura urgente per il graduale ripresa di il attivita ' economico e sociale in il rispetto di il esigenza di contenimento di il diffusione di il epidemia da covid-19 ( 21g00064 )
-__label__A6040	misura urgente per fronteggiare il diffusione di il covid-19 e intervento di sostegno per lavoratore con figlio minore in didattica a distanza o in quarantena ( 21g00040 )
-__label__A6040	conversione in legge , con modificazione , di il decreto -legge 14 gennaio 2021 , numero 2 , recare ulteriore disposizione urgente in materia di contenimento e prevenzione di il emergenza epidemiologico da covid-19 e di svolgimento di il elezione per il anno 2021 ( 21g00038 )
-__label__A6040	adeguamento di il normativa nazionale a il disposizione di il regolamento ( ue ) numero 2017/625 in materia di controllo sanitario ufficiale su il animale e su il merce che entrare in il unione e istituzione di il posto di controllo frontaliero di il ministero di il salute , in attuazione di il delega contenere in il articolo 12 , comma 3 , lettera h ) e lo ) di il legge 4 ottobre 2019 , numero 117 ( 21g00027 )
-__label__A6040	ulteriore disposizione urgente in materia di contenimento di il emergenza epidemiologico da covid-19 ( 21g00016 )
-__label__A6040	ulteriore disposizione urgente in materia di contenimento e prevenzione di il emergenza epidemiologico da covid-19 e di svolgimento di il elezione per il anno 2021 ( 21g00002 )
-__label__A6040	ulteriore disposizione urgente in materia di contenimento e gestione di il emergenza epidemiologico da covid-19 ( 21g00001 )

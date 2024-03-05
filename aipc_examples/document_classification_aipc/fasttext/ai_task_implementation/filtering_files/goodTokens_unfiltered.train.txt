@@ -1,8 +1,0 @@
-__label__A6040	misura urgente connettere emergenza impresa lavoro giovane salute servizio territoriale
-__label__A6040	misura urgente graduale ripresa attivita economico sociale rispetto esigenza contenimento diffusione epidemia
-__label__A6040	misura urgente fronteggiare diffusione intervento sostegno lavoratore figlio minore didattica distanza quarantena
-__label__A6040	conversione legge modificazione decreto -legge gennaio recare ulteriore disposizione urgente materia contenimento prevenzione emergenza epidemiologico svolgimento elezione anno
-__label__A6040	adeguamento normativa nazionale disposizione regolamento materia controllo sanitario ufficiale animale merce entrare istituzione posto controllo frontaliero salute attuazione delega contenere articolo comma lettera legge ottobre
-__label__A6040	ulteriore disposizione urgente materia contenimento emergenza epidemiologico
-__label__A6040	ulteriore disposizione urgente materia contenimento prevenzione emergenza epidemiologico svolgimento elezione anno
-__label__A6040	ulteriore disposizione urgente materia contenimento gestione emergenza epidemiologico

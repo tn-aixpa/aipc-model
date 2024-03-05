@@ -1,4 +1,0 @@
-__label__A6040	conversione legge modificazione decreto -legge marzo recare misura urgente materia sostegno impresa operatore economico lavoro salute servizio territoriale connettere emergenza
-__label__A6040	misura urgente relativo emergenza epidemiologico
-__label__A6040	conversione legge modificazione decreto -legge marzo recare misura urgente fronteggiare diffusione intervento sostegno lavoratore figlio minore didattica distanza quarantena
-__label__A6040	misura urgente materia sostegno impresa operatore economico lavoro salute servizio territoriale connettere emergenza

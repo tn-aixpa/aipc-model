@@ -1,8 +1,0 @@
-__label__A6040	misure urgenti connesse all' emergenza da covid-19 , per le imprese , il lavoro , i giovani , la salute e i servizi territoriali ( 21g00084 )
-__label__A6040	misure urgenti per la graduale ripresa delle attivita ' economiche e sociali nel rispetto delle esigenze di contenimento della diffusione dell' epidemia da covid-19 ( 21g00064 )
-__label__A6040	misure urgenti per fronteggiare la diffusione del covid-19 e interventi di sostegno per lavoratori con figli minori in didattica a distanza o in quarantena ( 21g00040 )
-__label__A6040	conversione in legge , con modificazioni , del decreto -legge 14 gennaio 2021 , n. 2 , recante ulteriori disposizioni urgenti in materia di contenimento e prevenzione dell' emergenza epidemiologica da covid-19 e di svolgimento delle elezioni per l' anno 2021 ( 21g00038 )
-__label__A6040	adeguamento della normativa nazionale alle disposizioni del regolamento ( ue ) n. 2017/625 in materia di controlli sanitari ufficiali sugli animali e sulle merci che entrano nell' unione e istituzione dei posti di controllo frontalieri del ministero della salute , in attuazione della delega contenuta nell' articolo 12 , comma 3 , lettere h ) e i ) della legge 4 ottobre 2019 , n. 117 ( 21g00027 )
-__label__A6040	ulteriori disposizioni urgenti in materia di contenimento dell' emergenza epidemiologica da covid-19 ( 21g00016 )
-__label__A6040	ulteriori disposizioni urgenti in materia di contenimento e prevenzione dell' emergenza epidemiologica da covid-19 e di svolgimento delle elezioni per l' anno 2021 ( 21g00002 )
-__label__A6040	ulteriori disposizioni urgenti in materia di contenimento e gestione dell' emergenza epidemiologica da covid-19 ( 21g00001 )
