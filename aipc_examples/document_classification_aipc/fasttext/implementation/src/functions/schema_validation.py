@@ -1,6 +1,6 @@
 
 # implementation of the frictionless validation logic
-
+import datajudge as dj
 class ValidationSchema:
     """
     This is a class that represents a validation schema. 
@@ -9,7 +9,6 @@ class ValidationSchema:
     """
     def __init__(self, configs):
         self.config = configs
-        self.logging = LoggingUtils(configs)
         self.metadata_store = dj.StoreConfig(
             title="Local Metadata Store",
             name="local_md",
@@ -90,92 +89,6 @@ class ValidationSchema:
             self.logging.log_generator_error(e, False)
             print(e)
 
-    def generate_constraints_resources(self, data_path, schema_path, resource_name):
-        """
-        Given a data path, schema path, and resource name, generate constraints and resources.
-        @param self - the class instance
-        @param data_path - the path to the data
-        @param schema_path - the path to the schema
-        @param resource_name - the name of the resource
-        @return A tuple containing the full constraints and the local resource.
-        """
-        fields = read_schema(schema_path, resource_name)
-        if len(fields) == 0:
-            msg = "There is no schema defined for {} ".format(resource_name)
-            raise Exception(msg)
-        full_constraints = self.obtain_full_constraints(fields, resource_name)
-
-        resource_local = dj.DataResource(
-            path=os.path.relpath(data_path),
-            name=resource_name,
-            store="local",
-            schema=fields,
-        )
-        return full_constraints, resource_local
-
-    def find_resources(self, schema_file, domain_data_path):
-        """
-        Given a schema file and a domain data path, find all resources in the domain data path and validate them against the schema file.
-        @param self - the class instance
-        @param schema_file - the schema file to validate against
-        @param domain_data_path - the path to the domain data
-        @return None
-        """
-        data_sources = os.listdir(domain_data_path)
-        for file in data_sources:
-            data_path = os.path.join(domain_data_path, file)
-            if (
-                os.path.isfile(data_path)
-                and file != self.config.parser_source["original_schema_file"]
-            ):
-                self.validation_schema_wrapper(file.lower, schema_file, data_path)
-
-    def validate_resource(self, resource=None, type="source"):
-        """
-        This method validates a resource, given a resource and a type. 
-        If the type is "source", it will use the package source and data source from the configuration file to validate the resource. 
-        If the type is "target", it will use the package target and data target from the configuration file to validate the resource. 
-        It will then check if the resource exists and if it does, it will call the validation_schema_wrapper method with the resource, schema file, and data path. 
-        If the resource is None, it will call the find_resources method with the schema file and domain data path.
-        @param self - the object instance
-        @param resource - the resource to validate
-        @param type - the type of resource to validate (source or target)
-        @return None
-        """
-        if type == "source":
-            packagename = self.config.domain["package_source"]
-            domain_data_path = self.config.validation_schema_source["data_source"]
-        else:
-            packagename = self.config.domain["package_target"]
-            domain_data_path = self.config.validation_schema_target["data_target"]
-        schema_file = self.config.domain["domain_settings_path"] + packagename + ".json"
-        if resource is not None:
-            data_path = os.path.join(domain_data_path, resource)
-            if os.path.isfile(data_path):
-                self.validation_schema_wrapper(resource, schema_file, data_path)
-        else:
-            self.find_resources(schema_file, domain_data_path)
-
-    def validation_schema_wrapper(self, resource, schema_file, data_path):
-        """
-        This function is a wrapper for a validation schema. 
-        It generates constraints and resources based on a given schema file and data path, and then validates the constraints against the resources.
-        @param self - the object instance
-        @param resource - the resource to validate
-        @param schema_file - the schema file to use for validation
-        @param data_path - the path to the data to validate
-        @return None
-        """
-        full_constraints, resource_local = self.generate_constraints_resources(
-            data_path, schema_file, resource.lower()
-        )
-        self.logging.log_generator(
-            "Starting to validate {} {}...".format(resource.lower(), data_path), False
-        )
-        self.validation_schema(full_constraints, resource_local)
-        self.logging.log_generator("Ending validation {}...".format(resource.lower()))
-
-        
 def validate_resource():
     #TODO load validation configurations
     validation_config = {}
