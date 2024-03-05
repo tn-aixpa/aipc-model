@@ -4,8 +4,8 @@ models:
      tags:                    "fasttext, text classification, legal acts clasification" # label the model to be easily findable and accessible
      version:                 "" # the version of the dataset
      framework:               "fasttext" # the primary framework the model is trained on (fasttext, pytorch, ....)
-     artifacts:                "../implementation/models/allTokens_unfiltered_model.bin" # the path/url the model is being output (implementation/models)
-       - reference_file:
+     artifacts:                
+       - reference_file:      "../implementation/models/allTokens_unfiltered_model.bin" # the path/url the model is being output (implementation/models)
          parameters:
            learning_rate: 1.0
            epochs: 25  
