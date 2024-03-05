@@ -1,0 +1,30 @@
+   name:                   "adaptation-bert" # name of the adaptation procedure
+   description:            "multi-label text classification with BERT" # 
+   tags:                   "multi-label classification, legal acts classification" #
+   version:                "0.1" #
+   framework:              "python" #
+     reference_model:      "../implementation/models/text_classific_bert" # 
+   implementation:         "" #
+     runtime:              "" #
+     source:               "" #
+     parameters:
+       learning_rate:      1.0 # learning rate hyperparameter
+       epochs:             25 # number of epoch hyperparameter
+       batch_size:         64 # 
+       max_seq_length:     512 #
+       num_labels:         3 #
+     requirements:         "" #
+     resources:            "" #
+       gpu:                #
+        - A100 
+        - A10
+       vram:
+        - 12GB  
+   evaluation:             # 
+    - type:                "" #
+      definition:          "" #
+      implementation:      "" #
+        runtime:           "" #
+        source:            "" #
+        requirements:      "" #     
+        resources:         "" #
