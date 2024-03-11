@@ -8,7 +8,7 @@ import json
 language = ""
 current_model = ""
 
-def get_metrics(y_true, predictions, threshold=0.5):
+def get_metrics(y_true, predictions, data_path, parents, threshold=0.5):
     """
     Return the metrics for the predictions.
 
@@ -23,11 +23,11 @@ def get_metrics(y_true, predictions, threshold=0.5):
     metrics, class_report, conf_matrix = sklearn_metrics_full(
         y_true,
         predictions,
-        path.join(args.data_path, language),
+        path.join(data_path, language),
         threshold,
         True,
         True,
-        args.parents,
+        parents,
     )
 
     # Save the classification report
@@ -56,17 +56,6 @@ def get_metrics(y_true, predictions, threshold=0.5):
     print(metrics)
 
     return metrics
-
-def compute_metrics(p: EvalPrediction):
-    """
-    Compute the metrics for the predictions during the training.
-
-    :param p: EvalPrediction object.
-    :return: Dictionary with the metrics.
-    """
-    preds = p.predictions[0] if isinstance(p.predictions, tuple) else p.predictions
-    result = get_metrics(p.label_ids, preds, args.threshold)
-    return result
 
 def start_evaluate():
     """
@@ -115,6 +104,18 @@ def start_evaluate():
         tokenizer = AutoTokenizer.from_pretrained(last_checkpoint)
         model = AutoModelForSequenceClassification.from_pretrained(last_checkpoint, trust_remote_code=args.trust_remote)
         no_cuda = True if args.device == "cpu" else False
+
+        def compute_metrics(p: EvalPrediction):
+            """
+            Compute the metrics for the predictions during the training.
+
+            :param p: EvalPrediction object.
+            :return: Dictionary with the metrics.
+            """
+            preds = p.predictions[0] if isinstance(p.predictions, tuple) else p.predictions
+            result = get_metrics(p.label_ids, preds, data_path, parents, args.threshold)
+            return result
+
 
         # Setup the evaluation
         trainer = Trainer(

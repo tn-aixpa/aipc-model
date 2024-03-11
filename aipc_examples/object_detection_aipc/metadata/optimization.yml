@@ -1,17 +1,16 @@
- - id:
-   name:
-   description:
-   tags:
-   version:
-   framework: 
-      reference_model: 
-      goals:
-        definition:
+ - name:                        # optimization name
+   description:                 # optimization description
+   tags:                        # optimization tags
+   version:                     # optimization version
+   framework:                   
+      reference_model:          # reference model
+      goals:         
+        definition:             "" # goal definition
    implementation:
     runtime: 
     source: 
-    handler: 
-    # ... (requirements, resources, ...)
+    requirements:               # path to the requirements, libraries, dependencies to be installed
+    resources:                  # necessary resources to apply the optimization
 
   compliance:
     - type: 
@@ -20,4 +19,5 @@
     runtime: 
     source: 
     handler: 
-    # ... (requirements, resources, ...)
+    requirements:
+    resources:

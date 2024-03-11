@@ -44,5 +44,14 @@ models:
            weighted_f1_score:
               min_val:  
               max_val:  
+     inference:
+       parameters:
+       serving:
+         implementation:
+           runtime:           "python" # the execution environment (python)
+           source:            "serving/model_serving.py" # reference to the implementation of the inference procedure inside implementation/src/
+           class_name:        "ClassifierModel" # the name of the serving class
+           requirements:      "" # particular dependencies the inference execution depends on
+           resources:         "" # particular resources the inference depends on
     monitoring:
       paramteters:

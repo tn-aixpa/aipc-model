@@ -9,6 +9,7 @@ class ClassifierModel(mlrun.serving.V2ModelServer):
     def load(self):
         """Download and initialize the model and/or other elements"""
         logging.basicConfig(level=logging.INFO)
+        # Load model metadata specifications
         model_metadata_path = "../../metadata/model.yml"
         with open(model_metadata_path, 'r') as model_md_content:
             models_metadata = yaml.safe_load(model_md_content)

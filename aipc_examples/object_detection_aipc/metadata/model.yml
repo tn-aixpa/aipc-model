@@ -15,6 +15,7 @@ models:
          handler:             "train" # the name of the function to call
          requirements:         # particular dependencies the model training depends on
          resources:            # particular resources the model training depends on
+       
      evaluation:
        - type:                "python" # supported compliance library for the evaluations to be applied to the model  Evidently, Custom script ....
          definition:           # inline / url (local/remote)

@@ -25,7 +25,20 @@
 
 ### Data Instances
 
-{{ data_instances_section | default("[More Information Needed]", true)}}
+Each record must have an ID, that is the key of the JSON record, a text and a list of labels.
+
+{
+    "20000111_000G0003": {
+        "text": "Interventi straordinari nel settore dei beni e delle attivita' culturali. ",
+        "id": "ipzs-ml-20000111_000G0003",
+        "labels": [
+            "A0400",
+            "C0I90"
+        ]
+    },
+...
+}
+
 
 ### Data Fields
 

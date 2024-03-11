@@ -14,7 +14,6 @@
       implementation:    "" # reference to the implementation of the contraint inside the folder src/
         runtime:         "" # the execution environment (python)
         source:          "" # reference to the implementation of the constraint inside the folder src/
-        handler:         "" # name of the function that contains the implementation
         requirements:    "" # particular dependencies the constraint specification may need (optional)
         resources:       "" # particular resources to be used for constraint implementation (optional)
     - type:              ""
@@ -22,7 +21,6 @@
       implementation:    # example of implementation
         runtime:         "" # the execution environment (python, ...)
         source:          "" # reference to the implementation file inside the folder src/... 
-        handler:         "" # name of the function that contains the implementation
         requirements:    "" # particular dependencies the dataset schema specification may need (optional)
         resources:       "" # particular reosurces to be used for schema implementation(optional)
       

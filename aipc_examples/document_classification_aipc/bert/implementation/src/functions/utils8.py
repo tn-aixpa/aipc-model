@@ -21,6 +21,9 @@ import math
 from copy import deepcopy
 from datetime import datetime
 from pagerange import PageRange
+import os
+from datetime import datetime
+from minio import Minio
 
 import pickle
 import json
@@ -842,3 +845,69 @@ def process_datasets(data_path, directory, tokenizer_name, years, max_length, li
                 stats_fp.write(f"Year: {year}\n{year_stats}\n\n")
 
     save_splits(X, masks, y, directory, mlb, data_path, seeds)
+
+language = ""
+current_epoch = 0
+current_split = 0
+
+def get_metrics(y_true, predictions, models_path, threshold=0.5, save_class_report=False, class_report_step=1, full_metrics=False, eval_metric="f1_micro"):
+    """
+    Return the metrics for the predictions.
+
+    :param y_true: True labels.
+    :param predictions: Predictions.
+    :param threshold: Threshold for the predictions. Default: 0.5.
+    :return: Dictionary with the metrics.
+    """
+    global current_epoch
+    global language
+    global current_split
+
+    metrics, class_report, _ = sklearn_metrics_full(
+        y_true,
+        predictions,
+        "",
+        threshold,
+        False,
+        save_class_report,
+    ) if full_metrics else sklearn_metrics_single(
+        y_true,
+        predictions,
+        "",
+        threshold,
+        False,
+        save_class_report,
+        eval_metric=eval_metric,
+    )
+
+    if save_class_report:
+        if current_epoch % class_report_step == 0:
+            with open(path.join(
+                models_path,
+                language,
+                str(current_split),
+                "train_reports",
+                f"class_report_{current_epoch}.json",
+            ), "w") as class_report_fp:
+                class_report.update(metrics)
+                json.dump(class_report, class_report_fp, indent=2)
+
+    current_epoch += 1
+
+    return metrics
+
+def upload_model(bucket_name, source_folder):
+    client = Minio("minio-api.digitalhub-test.smartcommunitylab.it",
+               access_key="minio",
+               secret_key="digitalhub-test")    
+    if not client.bucket_exists(bucket_name):
+        client.make_bucket(bucket_name)
+        
+    now = str(datetime.now())
+    for root, _, files in os.walk(source_folder):
+        for file_name in files:
+            local_file_path = os.path.join(root, file_name)
+            remote_object_path = os.path.join(now, local_file_path)
+            
+            client.fput_object(bucket_name, remote_object_path, local_file_path)
+

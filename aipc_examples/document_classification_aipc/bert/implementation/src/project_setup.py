@@ -1,10 +1,14 @@
 import os
 import mlrun
+import yaml
+
 
 def setup(project: mlrun.projects.MlrunProject) -> mlrun.projects.MlrunProject:
     source = project.get_param("source")
     secrets_file = project.get_param("secrets_file")
     default_image = project.get_param("default_image")
+    metadata_path = project.get_param("metadata_path")
+    requirements_file = project.get_param("requirements_file")
 
     # Set project git/archive source and enable pulling latest code at runtime
     if source:
@@ -19,62 +23,47 @@ def setup(project: mlrun.projects.MlrunProject) -> mlrun.projects.MlrunProject:
     # Set default project docker image - functions that do not specify image will use this
     if default_image:
         project.set_default_image(default_image)
+        
+    # build a docker image and optionally set it as the project default
+ 
 
-    project.set_function(
+    # TODO Add the function for preprocessing data for training the model
+    
+    model_metadata_path = f"{metadata_path}/model.yml"
+    with open(model_metadata_path, 'r') as model_md_content:
+        models_metadata = yaml.safe_load(model_md_content)
+    preproc_fn = project.set_function(
         name="pre-processing",
-        func="./preprocessing/01-preprocessing.py",
+        func="preprocessing/preprocess.py",
         handler="parse_ipzs",
         kind="job",
     )
-
-    project.set_function(
-        name="parsing",
-        func="./preprocessing/02-parsing.py",
-        handler="parse",
+    temp = project.code_to_function(
+        name="bert-legal2",
+        func="functions/train.py",
+        handler="start_train",
         kind="job",
+        with_repo=True
     )
+    project.build_function(temp)
+    """
+    for model in models_metadata["models"]:
+        print(model["training"]["implementation"]["source"])
+        print(model["name"])
+        print(model["training"]["implementation"]["handler"])
 
-    project.set_function(
-        name="extracting-test",
-        func="./preprocessing/03-extracting_test.py",
-        handler="extract_test_sets",
-        kind="job",
-    )
+        if model["training"]["implementation"]["source"] != "":
+            project.set_function(
+                name="bert-legal-acts-classification",
+                func="functions/train.py",
+                handler="start_train",
+                kind="job"
+            )
+    """
 
-    project.set_function(
-        name="saving-data",
-        func="./preprocessing/04-saving_data.py",
-        handler="save_data",
-        kind="job",
-    )
-
-    project.set_function(
-        name="filtering",
-        func="./preprocessing/05-filtering.py",
-        handler="filter",
-        kind="job",
-    )
+                     
+    # TODO define project artifacts such as: upload the training dataset folder
     
-    project.set_function(
-        name="training",
-        func="./functions/model_training.py",
-        handler="train",
-        kind="job"
-    )
-
-    project.set_function(
-        name="evaluation",
-        func="./functions/model_evaluation.py",
-        handler="evaluate",
-        kind="job"
-    )
-
-    project.set_workflow(
-        "classification",
-        workflow_path="./workflows/main_workflow.py",
-        engine="kfp",
-        handler="classification_pipeline"
-    )
     
     # Save and return the project:
     project.save()

@@ -1,115 +1,47 @@
-import argparse
-from transformers import AutoModelForSequenceClassification, TrainingArguments, EvalPrediction, AutoTokenizer, set_seed, Trainer
 import yaml
-from os import path, makedirs, listdir
-from utils8 import sklearn_metrics_single, sklearn_metrics_full, data_collator_tensordataset, load_data, CustomTrainer
 import json
+import mlrun
 from mlrun.execution import MLClientCtx
-
-language = ""
-current_epoch = 0
-current_split = 0
-
-
-def get_metrics(y_true, predictions, models_path, threshold=0.5, save_class_report=False, class_report_step=1, full_metrics=False, eval_metric="f1_micro"):
-    """
-    Return the metrics for the predictions.
-
-    :param y_true: True labels.
-    :param predictions: Predictions.
-    :param threshold: Threshold for the predictions. Default: 0.5.
-    :return: Dictionary with the metrics.
-    """
-    global current_epoch
-    global language
-    global current_split
-
-    metrics, class_report, _ = sklearn_metrics_full(
-        y_true,
-        predictions,
-        "",
-        threshold,
-        False,
-        save_class_report,
-    ) if full_metrics else sklearn_metrics_single(
-        y_true,
-        predictions,
-        "",
-        threshold,
-        False,
-        save_class_report,
-        eval_metric=eval_metric,
-    )
-
-    if save_class_report:
-        if current_epoch % class_report_step == 0:
-            with open(path.join(
-                models_path,
-                language,
-                str(current_split),
-                "train_reports",
-                f"class_report_{current_epoch}.json",
-            ), "w") as class_report_fp:
-                class_report.update(metrics)
-                json.dump(class_report, class_report_fp, indent=2)
-
-    current_epoch += 1
-
-    return metrics
+from os import path, makedirs, listdir
+from utils8 import data_collator_tensordataset, load_data, CustomTrainer, get_metrics, upload_model
+from transformers import AutoModelForSequenceClassification, TrainingArguments, EvalPrediction, AutoTokenizer, set_seed, Trainer
 
 
-def start_train(
-        context: MLClientCtx, 
-        lang: str = "it",
-        data_path: str ="data/",
-        models_path: str = "models/",
-        seeds: str = "all",
-        device: str = "cpu",
-        epochs: int = 100,
-        batch_size: int = 8,
-        learning_rate: float = 3e-5,
-        max_grad_norm: int = 5,
-        threshold: float = 0.5,
-        custom_loss: bool = False,
-        weighted_loss: bool = False,
-        fp16: bool = False,
-        eval_metric: str = "f1_micro",
-        save_class_report: bool = False,
-        class_report_step: int = 1,
-        full_metrics: bool = False,
-        trust_remote: bool = False
-        ):
+@mlrun.handler()
+def start_train(context: MLClientCtx):
     """
     Launch the training of the models.
-    :param lang: Language to train the model on.
-    :param data_path:Path to the EuroVoc data.
-    :param models_path: Save path of the models.
-    :param seeds: Seeds to be used to load the data splits, separated by a comma (e.g. 110,221). Use 'all' to use all the data splits.
-    :param device: Device to train on.
-            choices=["cpu", "cuda"]
-    :param epochs: Number of epochs to train the model.
-    :param batch_size: Batch size of the dataset.
-    :param learning_rate: Learning rate.
-    :param max_grad_norm: Gradient clipping norm.
-    :param threshold: Threshold for the prediction confidence.
-    :param custom_loss: Enable the custom loss (focal loss by default).
-    :param weighted_loss: Enable the weighted bcewithlogits loss. Only works if the custom loss is enabled.
-    :param fp16: Enable fp16 mixed precision training.
-    :param eval_metric: Evaluation metric to use on the validation set.
-            choices=[
-            'loss', 'f1_micro', 'f1_macro', 'f1_weighted', 'f1_samples',
-            'jaccard_micro', 'jaccard_macro', 'jaccard_weighted', 'jaccard_samples',
-            'matthews_macro', 'matthews_micro',
-            'roc_auc_micro', 'roc_auc_macro', 'roc_auc_weighted', 'roc_auc_samples',
-            'precision_micro', 'precision_macro', 'precision_weighted', 'precision_samples',
-            'recall_micro', 'recall_macro', 'recall_weighted', 'recall_samples',
-            'hamming_loss', 'accuracy', 'ndcg_1', 'ndcg_3', 'ndcg_5', 'ndcg_10'])
-    :param full_metrics: Compute all the metrics during the evaluation.
-    :param trust_remote: Trust the remote code for the model.
-    :param save_class_report: Save the classification report.
-    :param class_report_step: Number of epochs before creating a new classification report.
-    :return:
     """
+
+    # Load the configurations for the model training phase
+    model_metadata_path = "../../../metadata/model.yml"
+    with open(model_metadata_path, 'r') as model_md_content:
+        models_metadata = yaml.safe_load(model_md_content)
+    model_metadata = models_metadata["models"][0]["training"]
+
+    output_dir = model_metadata["output_dir"]
+    bucket_name = model_metadata["bucket_name"]
+    lang = model_metadata["parameters"]["language"]
+    data_path = model_metadata["data"]["reference"]
+    models_path = model_metadata["output_dir"]
+    epochs = model_metadata["parameters"]["epochs"]
+    batch_size = model_metadata["parameters"]["batch_size"]
+    learning_rate = 3e-5 # float(model_metadata["parameters"]["learning_rate"])
+    max_grad_norm = model_metadata["parameters"]["max_grad_norm"]
+    threshold = float(model_metadata["parameters"]["threshold"])
+    eval_metric = model_metadata["parameters"]["eval_metric"]
+    full_metrics = model_metadata["parameters"]["full_metrics"]
+    class_report_step = model_metadata["parameters"]["class_report_step"]
+    save_class_report = model_metadata["parameters"]["save_class_report"]
+    seeds = model_metadata["parameters"]["seeds"]
+    device = model_metadata["parameters"]["device"]
+    custom_loss = model_metadata["parameters"]["custom_loss"]
+    weighted_loss = model_metadata["parameters"]["weighted_loss"]
+    trust_remote = model_metadata["parameters"]["trust_remote"]
+    fp16 = model_metadata["parameters"]["fp16"]
+    report_to = model_metadata["parameters"]["report_to"]
+    
+    
     # Load the configuration for the models of all languages
     with open("config/models.yml", "r") as config_fp:
         config = yaml.safe_load(config_fp)
@@ -122,7 +54,6 @@ def start_train(
 
     print(f"Working on device: {device}")
 
-
     # Create the directory for the models
     if not path.exists(models_path):
         makedirs(models_path)
@@ -131,6 +62,8 @@ def start_train(
     language = lang
 
     print(f"\nTraining for language: '{lang}' using: '{config[lang]}'...")
+    print(output_dir)
+    print(seeds)
 
     # Train the models for all splits
     for seed in seeds:
@@ -193,7 +126,7 @@ def start_train(
             per_device_train_batch_size=batch_size,
             per_device_eval_batch_size=batch_size,
             weight_decay=0.01,
-            report_to="all",
+            report_to=report_to,
             fp16=fp16,
         )
 
@@ -239,11 +172,8 @@ def start_train(
                 compute_metrics=compute_metrics
             )
         trainer.train()
+        trainer.save_model(output_dir)
+        upload_model(bucket_name, output_dir)
 
-        # print(f"Best checkpoint path: {trainer.state.best_model_checkpoint}")
+        print(f"Best checkpoint path: {trainer.state.best_model_checkpoint}")
 
-
-if __name__ == "__main__":
-    # fmt: off
-
-    CLI(start_train)

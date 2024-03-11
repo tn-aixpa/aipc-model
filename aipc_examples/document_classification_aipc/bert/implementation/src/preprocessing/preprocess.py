@@ -53,8 +53,3 @@ def preprocessdata(
         process_datasets(data_path, directory, config[lang], years, max_length, limit_tokenizer, get_doc_ids, add_mt_do, title_only, add_title, seeds)
 
     #context.log_artifact(output_folder, local_path=f"{output_folder}.zip", upload=True, format="zip")
-
-if __name__ == "__main__":
-    from jsonargparse import CLI
-
-    CLI(preprocessdata)

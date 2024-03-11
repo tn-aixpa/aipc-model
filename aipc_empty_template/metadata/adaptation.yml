@@ -11,8 +11,6 @@
        learning_rate:      ""
        epochs:             ""
        batch_size:         ""
-       max_seq_length:     ""
-       num_labels:         ""
      requirements:         "" #
      resources:            #
        gpu:                #

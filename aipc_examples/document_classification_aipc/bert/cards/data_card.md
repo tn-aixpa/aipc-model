@@ -25,7 +25,27 @@
 
 ### Data Instances
 
-{{ data_instances_section | default("[More Information Needed]", true)}}
+The summarized documents will be formatted in a way that allows the end user to choose how much of the text they want to keep. The format is as follows:
+
+"document_id": {
+    "title": "document_title",
+    "link": "document_link",
+    "eurovoc_classifiers": [
+        "classifier_1",
+        "classifier_2",
+        ...
+    ],
+    "full_text": [
+        "sentence_1",
+        "sentence_2",
+        ...
+    ],
+    "importance": [
+        0.7326374,
+        0.1277499,
+        ...
+    ]
+}
 
 ### Data Fields
 

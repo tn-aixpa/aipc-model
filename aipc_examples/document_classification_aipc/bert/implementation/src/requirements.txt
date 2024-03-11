@@ -19,3 +19,4 @@ PageRange==0.4
 jsonargparse[signatures]  # CLI
 torch
 torchvision==0.17.0
+minio
