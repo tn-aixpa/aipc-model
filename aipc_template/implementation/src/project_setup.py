@@ -51,15 +51,19 @@ def setup(project: mlrun.projects.MlrunProject) -> mlrun.projects.MlrunProject:
                 handler=model["training"]["implementation"]["handler"],
                 kind="job"
             )
-
-    serving_fn = project.set_function('src/predictor_serving.py', name='serving-predictor', kind='serving',image='mlrun/mlrun', requirements=['darts==0.25.0', 'pandas==1.4.4', 'numpy==1.22.4', 'patsy==0.5.2'])
-    
-    serving_fn.add_model(
-        "parcheggi_predictor_model",
-        model_path="store://models/parcheggi/train-multimodel-train-model_parcheggi_predictor_model#0:latest",
-        class_name="ParkingPredictorModel",
-    )
-    project.deploy_function(serving_fn)
+    if model["inference"]["serving"]["implementation"]["source"]:
+        serving_fn = project.set_function(
+            model["inference"]["serving"]["implementation"]["source"], 
+            name='serving-predictor', 
+            kind='serving',
+            requirements=model["inference"]["serving"]["implementation"]["requirements"]
+        )    
+        serving_fn.add_model(
+            "serving_model",
+            model_path=model["training"]["output_dir"],
+            class_name=model["inference"]["serving"]["implementation"]["class_name"],
+        )    
+        project.deploy_function(serving_fn)
         
     # TODO define project artifacts such as: upload the training dataset folder
     
