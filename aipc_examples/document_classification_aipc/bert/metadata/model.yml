@@ -77,6 +77,5 @@ models:
            requirements:      "" # particular dependencies the inference execution depends on
            resources:         "" # particular resources the inference depends on
 
-
      monitoring:                  #
       paramteters:             "" #

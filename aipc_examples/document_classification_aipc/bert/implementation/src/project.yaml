@@ -1,0 +1,32 @@
+kind: project
+metadata:
+  name: bert-aipc-project
+  created: '2024-03-07T12:08:32.483154'
+spec:
+  params:
+    source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/document_classification_aipc/bert
+    default_image: mlrun/mlrun
+    requirements_file: ./requirements.txt
+    metadata_path: ../../metadata/
+  functions:
+  - url: preprocessing/preprocess.py
+    name: pre-processing
+    kind: job
+    handler: parse_ipzs
+  - url: functions/train.py
+    name: bert-legal2
+    kind: job
+    handler: start_train
+  workflows: []
+  artifacts: []
+  conda: ''
+  source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/document_classification_aipc/bert
+  load_source_on_run: true
+  desired_state: online
+  default_image: mlrun/mlrun
+  build:
+    commands: []
+    requirements: []
+  custom_packagers: []
+status:
+  state: online

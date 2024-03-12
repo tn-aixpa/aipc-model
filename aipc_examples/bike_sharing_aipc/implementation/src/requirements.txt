@@ -1,0 +1,10 @@
+#scipy==1.6.3
+fasttext==0.9.2
+striprtf==0.0.13
+Unidecode==1.2.0
+numpy #==1.20.3
+pandas==1.2.4
+tqdm==4.61.1
+requests==2.25.1
+scikit_learn #==1.0
+stanza
