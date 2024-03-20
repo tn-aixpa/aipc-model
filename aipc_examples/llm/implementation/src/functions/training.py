@@ -1,6 +1,7 @@
 import os
 import torch
 import transformers
+from functools import reduce
 from trl import SFTTrainer
 from datasets import load_dataset
 from peft import LoraConfig, PeftModel
@@ -25,11 +26,35 @@ def preprocess(sample, tokenizer, max_tokens=512, add_eos_token=True):
     if result["input_ids"][-1] != tokenizer.eos_token_id and add_eos_token:
         result["input_ids"].append(tokenizer.eos_token_id)
         result["attention_mask"].append(1)
-
     result["labels"] = result["input_ids"].copy()
-
     return result
 
+def get_model_parameter(param_name):
+    # Load model metadata
+    model_metadata_path = "../../../metadata/model.yml"
+    with open(model_metadata_path, 'r') as model_md_content:
+        models_metadata = yaml.safe_load(model_md_content)        
+    model_metadata = models_metadata["models"][0]["training"]
+    list_parameters = list(filter(lambda element: element['name'] == param_name, model_metadata["parameters"]))
+    return list_parameters[0]["value"] if len(list_parameters) > 0 else None
+
+
+def get_optimization_parameter(param_name, type="peft"):
+    """
+    Load optimization metadata
+    """
+    optimization_metadata_path = "../../../metadata/optimization.yml"
+    with open(optimization_metadata_path, 'r') as optimization_md_content:
+        optimization_metadata = yaml.safe_load(optimization_md_content)        
+    optimization_metadata_quantization = optimization_metadata[0]["quantization"]
+    optimization_metadata_peft = optimization_metadata[0]["peft"]
+    if type=='peft':
+        list_parameters = list(filter(lambda element: element['name'] == param_name, optimization_metadata_peft["parameters"]))
+    elif type=='quantization':
+        list_parameters = list(filter(lambda element: element['name'] == param_name, optimization_metadata_quantization["parameters"]))
+    else:
+        raise Exception("optimization type should be 'peft' or 'quantization'")  
+    return list_parameters[0]["value"] if len(list_parameters) > 0 else None
 
 def train():
     """
@@ -39,33 +64,27 @@ def train():
     model_metadata_path = "../../../metadata/model.yml"
     with open(model_metadata_path, 'r') as model_md_content:
         models_metadata = yaml.safe_load(model_md_content)        
-    model_metadata = models_metadata["models"][0]["training"]
-    # Load optimization metadata
-    optimization_metadata_path = "../../../metadata/optimization.yml"
-    with open(optimization_metadata_path, 'r') as optimization_md_content:
-        optimization_metadata = yaml.safe_load(optimization_md_content)        
-    optimization_metadata_quantization = optimization_metadata[0]["quantization"]
-    optimization_metadata_peft = optimization_metadata[0]["peft"]    
-
+    model_metadata = models_metadata["models"][0]["training"] 
     save_model = model_metadata["output_dir"]
-    seed = model_metadata["parameters"]["seed"]
-    base_model = model_metadata["parameters"]["base_model"]
     file_train = model_metadata["data"]["train"]
     file_valid = model_metadata["data"]["valid"]
-    log_steps = model_metadata["parameters"]["log_steps"]
-    eval_steps = model_metadata["parameters"]["eval_steps"]
-    save_steps = model_metadata["parameters"]["save_steps"]
-    warmup_steps = model_metadata["parameters"]["warmup_steps"]
-    per_device_batch_size = model_metadata["parameters"]["per_device_batch_size"]
-    gradient_accumulation_steps = model_metadata["parameters"]["gradient_accumulation_steps"]
-    max_epochs = model_metadata["parameters"]["max_epochs"]
-    learning_rate = model_metadata["parameters"]["learning_rate"]
-    max_tokens = model_metadata["parameters"]["max_tokens"]
-    gradient_checkpointing = model_metadata["parameters"]["gradient_checkpointing"]
-    group_by_length = model_metadata["parameters"]["group_by_length"]
-    resume_checkpoint = model_metadata["parameters"]["resume_checkpoint"]
-    wandb_entity = model_metadata["parameters"]["wandb_entity"]
-    wandb_project = model_metadata["parameters"]["wandb_project"]
+
+    seed = get_model_parameter("seed")
+    base_model = get_model_parameter("base_model")
+    log_steps = get_model_parameter("log_steps")
+    eval_steps = get_model_parameter("eval_steps")
+    save_steps = get_model_parameter("save_steps")
+    warmup_steps = get_model_parameter("warmup_steps")
+    per_device_batch_size = get_model_parameter("per_device_batch_size")
+    gradient_accumulation_steps = get_model_parameter("gradient_accumulation_steps")
+    max_epochs = get_model_parameter("max_epochs")
+    learning_rate = get_model_parameter("learning_rate")
+    max_tokens = get_model_parameter("max_tokens")
+    gradient_checkpointing = get_model_parameter("gradient_checkpointing")
+    group_by_length = get_model_parameter("group_by_length")
+    resume_checkpoint = get_model_parameter("resume_checkpoint")
+    wandb_entity = get_model_parameter("wandb_entity")
+    wandb_project = get_model_parameter("wandb_project")
 
     os.environ["WANDB_ENTITY"] = wandb_entity
     os.environ["WANDB_PROJECT"] = wandb_project
@@ -73,10 +92,10 @@ def train():
     transformers.set_seed(seed)
 
     # Activate 4-bit precision base model loading
-    use_4bit = True
-    bnb_4bit_compute_dtype = "float16"
-    bnb_4bit_quant_type = "nf4"
-    use_nested_quant = False
+    use_4bit = get_optimization_parameter("load_in_4bit", type="quantization")
+    bnb_4bit_compute_dtype = get_optimization_parameter("bnb_4bit_compute_dtype", type="quantization")
+    bnb_4bit_quant_type = get_optimization_parameter("bnb_4bit_quant_type", type="quantization")
+    use_nested_quant = get_optimization_parameter("bnb_4bit_use_double_quant", type="quantization")
 
     compute_dtype = getattr(torch, bnb_4bit_compute_dtype)
 
@@ -114,11 +133,11 @@ def train():
     callbacks = [EarlyStoppingCallback(early_stopping_patience=5)]
 
     # Setting up LoRA configuration
-    lora_r = optimization_metadata_peft[""]
+    lora_r = get_optimization_parameter("rank", type="peft")
     # Alpha parameter for LoRA scaling
-    lora_alpha = 16
+    lora_alpha = get_optimization_parameter("lora_alpha", type="peft")
     # Dropout probability for LoRA layers
-    lora_dropout = 0.1
+    lora_dropout = get_optimization_parameter("lora_dropout", type="peft")
     peft_config = LoraConfig(
         lora_alpha=lora_alpha,
         lora_dropout=lora_dropout,

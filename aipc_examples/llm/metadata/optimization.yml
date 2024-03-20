@@ -11,7 +11,16 @@
         - definition:
           value:
    quantization:
-     bits:                    "" # the quantization"
+     type:                    "bitsandbytes" # the quantization
+     parameters:     
+       - name:                "load_in_4bit"
+         value:               True
+       - name:                "bnb_4bit_compute_dtype"
+         value:               "float16"
+       - name:                "bnb_4bit_quant_type"
+         value:               "nf4"
+       - name:                "bnb_4bit_use_double_quant"
+         value:               False
    peft:
       type:                   "lora" # the type of the adapter
       description:            "" # description of the adapter
