@@ -10,8 +10,8 @@ from transformers import (
 class ChatBot(mlrun.serving.V2ModelServer):
     def load(self):
         """load and initialize the model and/or other elements"""
-        model_name_or_path = 'EleutherAI/pythia-12b-deduped'
-        adapter_path = 'checkpoints/pythia-12b-finetuned-edit/checkpoint-5760'
+        model_name_or_path = self.get_param("model_name")
+        adapter_path = self.get_param("adapter_path")
         model, tokenizer = self.load_model(model_name_or_path, adapter_path)
         self.model = model
         self.tokenizer = tokenizer
@@ -21,7 +21,8 @@ class ChatBot(mlrun.serving.V2ModelServer):
         row = body["row"]
         skip_special_tokens = body["skip_special_tokens"]
         max_length = body["max_length"]
-        return self.generate(row, skip_special_tokens, max_length)
+        adapter_papth = body["adapter_path"]
+        return self.generate(row, skip_special_tokens, max_length, adapter_papth)
     
     
     def load_model(self, model_name_or_path, adapter_path):
@@ -37,7 +38,7 @@ class ChatBot(mlrun.serving.V2ModelServer):
             model_name_or_path,
             torch_dtype=torch.bfloat16,
             device_map={"": 0},
-            load_in_4bit=True,
+            #load_in_4bit=True,
             quantization_config=BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_compute_dtype=torch.bfloat16,
