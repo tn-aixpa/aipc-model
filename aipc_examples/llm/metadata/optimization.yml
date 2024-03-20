@@ -1,3 +1,6 @@
+# Optimization parameters for the model itself and its training process.
+# This file shoould contain quantization and peft parameters
+
  - name:                      "" # name of the optimization technique
    description:               "" # description of the optimization technique
    tags:                      "" # label the optimization technique to be easily findable and accessible
@@ -9,12 +12,16 @@
           value:
    quantization:
      bits:                    "" # the quantization"
-   adapter:
-      type:                   "" # the type of the adapter
+   peft:
+      type:                   "lora" # the type of the adapter
       description:            "" # description of the adapter
       parameters:
-        - name:               "" # name of the parameter
-          value:              "" # value of the parameter
+        - name:               "rank" # rank - LoRA attention dimension
+          value:              "64" # value of the parameter
+        - name:               "lora_alpha" # The alpha parameter for Lora scaling.
+          value:              "16" # value of the parameter
+        - name:               "lora_dropout" # The dropout probability for Lora layers
+          value:              "0.1" # value of the parameter
    implementation:
     runtime:                  "" # define the                 
     source: 

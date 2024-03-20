@@ -17,18 +17,64 @@ models:
        output_dir:            "" # the path/url the model is being output (implementation/models)
        bucket_name:           "" # the name of the bucket where the model is being stored
        data:                   
-         reference:              # (local/remote) (array of references?)
+         train:               "../data/original/all_original/train.txt" # (local/remote)
+         valid:               "../data/original/all_original/valid.txt" # 
        implementation:         
-         runtime:             "" # the execution environment (python)
-         source:              "" # reference to the implementation of the training procedure inside implementation/src/
-         requirements:           # particular dependencies the model training depends on
+         runtime:             "python" # the execution environment (python)
+         source:              "functions/training.py" # reference to the implementation of the training procedure inside implementation/src/
+         requirements:        "requirements.txt" # particular dependencies the model training depends on
          resources:              # particular resources the model training depends on
-           gpu:                  #
-           vram:
+           gpu:               "1" #
+           vram:              "46GB" #   
        parameters: 
-         - name:              "" # name of the parameter
-           desc:              "" # description of the parameter
-           value:             "" # value of the parameter
+        - name:             "seed" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "42" # value of the parameter
+        - name:             "base_model" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "EleutherAI/pythia-1.4b-deduped" # value of the parameter
+        - name:             "log_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "50" # value of the parameter
+        - name:             "eval_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "720" # value of the parameter
+        - name:             "save_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "720" # value of the parameter
+        - name:             "warmup_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "100" # value of the parameter
+        - name:             "per_device_batch_size" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "4" # value of the parameter
+        - name:             "gradient_accumulation_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2" # value of the parameter
+        - name:             "max_epochs" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "50" # value of the parameter
+        - name:             "learning_rate" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2.0e-4" # value of the parameter
+        - name:             "max_tokens" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2048" # value of the parameter
+        - name:             "gradient_checkpointing" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            True # value of the parameter
+        - name:             "group_by_length" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            False # value of the parameter
+        - name:             "resume_checkpoint" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "../models/checkpoints/checkpoint-9360" # value of the parameter
+        - name:             "wandb_entity" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "" # value of the parameter
+        - name:             "wandb_project" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "" # value of the parameter
      evaluation:
        - type:                "" # supported compliance library for the evaluations to be applied to the model  Evidently, Custom script ....
          definition:             # inline / url (local/remote)
@@ -43,8 +89,8 @@ models:
             max_val:          "" # max value of the metric
      inference:
        parameters:
-         - name:              "temperature" # name of the parameter
-           value:             0.8 # value of the parameter
+         - name:              "" # name of the parameter
+           value:             "" # value of the parameter
        serving:
          implementation:
            runtime:           "" # the execution environment (python)
@@ -52,4 +98,4 @@ models:
            requirements:         # particular dependencies the inference execution depends on
            resources:            # particular resources the inference depends on
      monitoring:
-       paramteters:
+       paramteters:           ""
