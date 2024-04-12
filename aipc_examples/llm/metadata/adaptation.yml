@@ -4,6 +4,13 @@
    version:                "" #
    framework:              "" #
      reference_model:      "" # 
+   prompting:              # apply WISER Framework
+    role:                  "" # Who - Assign an identity or role
+    instructions:          "" # Instruction - Tell the model what to do
+    sub_tasks:             "" # break it down into simpler steps
+    examples:              "" # provide examples if applicable
+   rag:                    "" #          
+   
    implementation:         "" #
      runtime:              "" #
      source:               "" #
@@ -11,6 +18,7 @@
        learning_rate:      ""
        epochs:             ""
        batch_size:         ""
+
      requirements:         "" #
      resources:            #
        gpu:                #
@@ -23,3 +31,7 @@
         source:            "" #
         requirements:      "" #     
         resources:         "" #
+
+
+### LoRA parameters
+# 
