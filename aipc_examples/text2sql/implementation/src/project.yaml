@@ -1,0 +1,26 @@
+kind: project
+metadata:
+  name: llm-text2seq-aipc
+  created: '2024-04-23T12:05:47.371025'
+spec:
+  params:
+    source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/text2seq
+    default_image: mlrun/mlrun
+    requirements_file: ./requirements.txt
+    metadata_path: ../../metadata/
+  functions: []
+  workflows: []
+  artifacts: []
+  conda: ''
+  source: https://github.com/smartcommunitylab/ai_product_card_templates/tree/main/aipc_examples/text2seq
+  load_source_on_run: true
+  desired_state: online
+  default_image: mlrun/mlrun
+  build:
+    image: mlrun/mlrun
+    base_image: mlrun/mlrun
+    commands: []
+    requirements: []
+  custom_packagers: []
+status:
+  state: online

@@ -1,0 +1,113 @@
+models:
+   - name:                    "chatbot" # name of the model
+     description:             "" # description of the model
+     tags:                    "" # label the model to be easily findable and accessible
+     version:                 "" # the version of the dataset
+     framework:               "" # the primary framework the model is trained on (fasttext, pytorch, ....)
+     artifacts:               
+       - reference_file:      "../models/checkpoints/pythia-1.4b-finetuned-orig/checkpoint-9360" # the path to the model folder to be used for the inference
+         parameters:
+           learning_rate:     ""
+           epochs:            ""
+         dataset:             "" # uri to the particular dataset used for training the model
+         metrics:
+           - name:            ""
+             value:           ""
+       - reference_file:      "../models/checkpoints/llama2-7b-finetuned/checkpoint-4320" # the path to the model folder to be used for the inference
+         parameters:
+           learning_rate:     ""
+           epochs:            ""
+         dataset:             "" # uri to the particular dataset used for training the model
+         metrics:
+           - name:            ""
+             value:           ""
+     training:
+       output_dir:            "../models/checkpoints/pythia-1.4b-finetuned-orig" # the path/url the model is being output (implementation/models)
+       bucket_name:           "" # the name of the bucket where the model is being stored
+       data:                   
+         train:               "../data/original/all_original/train.txt" # (local/remote)
+         valid:               "../data/original/all_original/valid.txt" # 
+       implementation:         
+         runtime:             "python" # the execution environment (python)
+         source:              "functions/training.py" # reference to the implementation of the training procedure inside implementation/src/
+         requirements:        "requirements.txt" # particular dependencies the model training depends on
+         resources:              # particular resources the model training depends on
+           gpu:               "1" #
+           vram:              "46GB" #   
+       parameters: 
+        - name:             "seed" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "42" # value of the parameter
+        - name:             "base_model" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "meta-llama/Llama-2-7b-hf" # value of the parameter
+        - name:             "log_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "50" # value of the parameter
+        - name:             "eval_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "720" # value of the parameter
+        - name:             "save_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "720" # value of the parameter
+        - name:             "warmup_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "100" # value of the parameter
+        - name:             "per_device_batch_size" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "4" # value of the parameter
+        - name:             "gradient_accumulation_steps" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2" # value of the parameter
+        - name:             "max_epochs" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "50" # value of the parameter
+        - name:             "learning_rate" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2.0e-4" # value of the parameter
+        - name:             "max_tokens" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "2048" # value of the parameter
+        - name:             "gradient_checkpointing" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            True # value of the parameter
+        - name:             "group_by_length" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            False # value of the parameter
+        - name:             "resume_checkpoint" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "../models/checkpoints/checkpoint-9360" # value of the parameter
+        - name:             "wandb_entity" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "" # value of the parameter
+        - name:             "wandb_project" # name of the parameter
+          desc:             "" # description of the parameter
+          value:            "" # value of the parameter
+     evaluation:
+       - type:                "" # supported compliance library for the evaluations to be applied to the model  Evidently, Custom script ....
+         definition:             # inline / url (local/remote)
+         implementation:       
+           runtime:           "" # the execution environment (python)
+           source:            "" # reference to the implementation of the compliance procedure inside implementation/src/
+           requirements:      "" # particular dependencies the compliance execution depends on
+           resources:         "" # particular resources the compliance depends on 
+         metrics:
+          - name:             "" # name of the metric       
+            min_val:          "" # min value of the metric
+            max_val:          "" # max value of the metric
+     inference:
+       parameters:
+         - name:              "adapter_path" # name of the parameter
+           value:             "s3://llama2-adapter/checkpoint-400" # value of the parameter
+         - name:              "model_name" # name of the parameter
+           value:             "meta-llama/Llama-2-7b-hf" # value of the parameter
+       serving:
+         implementation:
+           runtime:           "" # the execution environment (python)
+           source:            "serving/serve.py" # reference to the implementation of the inference procedure inside implementation/src/
+           requirements:      "requirements.txt" # particular dependencies the inference execution depends on
+           resources:         # particular resources the inference depends on
+             name:            "gpu"
+             value:           "A40" 
+     monitoring:
+       parameters:           ""

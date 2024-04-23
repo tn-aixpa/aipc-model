@@ -1,0 +1,51 @@
+   name:                   "" # name of the adaptation procedure
+   description:            "" # 
+   tags:                   "" #
+   version:                "" #
+   framework:              "" #
+   reference_model:      "" # 
+   prompting:              # apply WISER Framework
+    role:                  "" # Who - Assign an identity or role
+    instruction:          "" # Instruction - Tell the model what to do
+    sub_tasks:             "" # break it down into simpler steps
+    examples:              "" # provide examples if applicable
+    template: |
+        ### Role:
+        {role}
+
+        ### Context:
+        {context}
+
+        ### Instruction:
+        {instruction}
+
+        ### Input:
+        {input}
+
+        ### Response:
+   rag:                    "" #          
+   
+   implementation:         "" #
+     runtime:              "" #
+     source:               "" #
+     parameters:
+       learning_rate:      ""
+       epochs:             ""
+       batch_size:         ""
+
+     requirements:         "" #
+     resources:            #
+       gpu:                #
+       vram:
+   evaluation:             # 
+    - type:                "" #
+      definition:          "" #
+      implementation:      "" #
+        runtime:           "" #
+        source:            "" #
+        requirements:      "" #     
+        resources:         "" #
+
+
+### LoRA parameters
+# 
