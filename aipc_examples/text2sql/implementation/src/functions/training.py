@@ -1,10 +1,12 @@
 import os
 import torch
 import json
+import glob
 from math import ceil
 from pathlib import Path
 from trl import SFTTrainer
-from peft import LoraConfig
+from zipfile import ZipFile
+from peft import LoraConfig, PeftModel
 from huggingface_hub import login
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig, TrainingArguments
@@ -71,9 +73,24 @@ def formatting_func(example):
     \n\n### Response:\n{example['output']}"
     return text
 
+def save_full_model(model_name, output_dir, adapters_path):
+    # Load tokenizer and base model
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+    base_model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+    # Initialize PeftModel with base model and adapters path
+    model = PeftModel.from_pretrained(base_model, adapters_path)
+    # Merge the trainer adapter with the base model and unload the adapter
+    model = model.merge_and_unload()
+    full_model_path = output_dir + "/full"
+    model.save_pretrained(full_model_path, safe_serialization=True, max_shard_size="2GB")
+    tokenizer.save_pretrained(full_model_path)
+    with ZipFile("text2seq_full_model.zip", "w") as zip_file:
+        for file in glob.glob(f"{full_model_path}/*"):
+            zip_file.write(file)
+    return "text2seq_full_model.zip"
 
 def training(context):
-    login('')
+    login(context.get_secret('HF_TOKEN'))
 
     # setting quantization params
     quantization_config = BitsAndBytesConfig(
@@ -141,9 +158,23 @@ def training(context):
         max_seq_length=1024,
         formatting_func=formatting_func,
     )
-    os.environ["WANDB_ENTITY"] = "llm"
-    os.environ["WANDB_PROJECT"] = "llama2-7b-finetuned"
-    os.environ["WANDB_API_KEY"] = ""
+    os.environ["WANDB_ENTITY"] = context.get_secret('WANDB_ENTITY')
+    os.environ["WANDB_PROJECT"] = context.get_secret('WANDB_PROJECT')
+    os.environ["WANDB_API_KEY"] = context.get_secret('WANDB_API_KEY')
 
     trainer.train()
+    full_model_file = save_full_model(model_id, output_dir, adapters_path)
+    # log model to MLRun
+    context.log_model(
+        "llama2_text2seq_model",
+        parameters={
+            "max_steps": 1000
+        },
+        metrics = {}, # TODO
+        model_file=full_model_file,
+        labels={"class": "AutoModelForCausalLM"},
+        algorithm="AutoModelForCausalLM",
+        framework="transformers"
+    )
+    
     
