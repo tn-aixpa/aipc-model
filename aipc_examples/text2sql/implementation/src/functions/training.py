@@ -90,7 +90,7 @@ def save_full_model(model_name, output_dir, adapters_path):
     return "text2seq_full_model.zip"
 
 def training(context):
-    login('')
+    login(context.get_secret('HF_TOKEN'))
 
     # setting quantization params
     quantization_config = BitsAndBytesConfig(
@@ -158,9 +158,9 @@ def training(context):
         max_seq_length=1024,
         formatting_func=formatting_func,
     )
-    os.environ["WANDB_ENTITY"] = "llm"
-    os.environ["WANDB_PROJECT"] = "llama2-7b-finetuned"
-    os.environ["WANDB_API_KEY"] = ""
+    os.environ["WANDB_ENTITY"] = context.get_secret('WANDB_ENTITY')
+    os.environ["WANDB_PROJECT"] = context.get_secret('WANDB_PROJECT')
+    os.environ["WANDB_API_KEY"] = context.get_secret('WANDB_API_KEY')
 
     trainer.train()
     full_model_file = save_full_model(model_id, output_dir, adapters_path)
