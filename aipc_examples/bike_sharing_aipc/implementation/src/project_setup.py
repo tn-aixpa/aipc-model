@@ -19,42 +19,8 @@ def setup(project: mlrun.projects.MlrunProject) -> mlrun.projects.MlrunProject:
     if secrets_file and os.path.exists(secrets_file):
         project.set_secrets(file_path=secrets_file)
         mlrun.set_env_from_file(secrets_file)
-
-    # Set default project docker image - functions that do not specify image will use this
-    if default_image:
-        project.set_default_image(default_image)
-        
-    # build a docker image and optionally set it as the project default
-    if requirements_file:
-        project.build_image(
-            base_image=default_image,
-            requirements_file=requirements_file,
-            set_as_default=True
-        )
-
-    model_metadata_path = f"{metadata_path}/model.yml"
-    with open(model_metadata_path, 'r') as model_md_content:
-        models_metadata = yaml.safe_load(model_md_content)
-    
-    for model in models_metadata["models"]:
-        if model["training"]["implementation"]["source"]:
-            project.set_function(
-                name=model["name"],
-                func=model["training"]["implementation"]["source"],
-                handler=model["training"]["implementation"]["handler"],
-                kind="job"
-            )
-        if model["evaluation"]["implementation"]["source"]:
-            project.set_function(
-                name=model["name"],
-                func=model["training"]["implementation"]["source"],
-                handler=model["training"]["implementation"]["handler"],
-                kind="job"
-            )
-        
-    # TODO define project artifacts such as: upload the training dataset folder
-    
-    
+            
+    # TODO define project artifacts such as: upload the training dataset folder   
     # Save and return the project:
     project.save()
     return project
