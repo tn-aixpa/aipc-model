@@ -165,6 +165,7 @@ def training(context):
 
     trainer.train()
     adapters_path = [el for el in os.listdir(output_dir) if el.startswith('checkpoint')][0]
+    adapters_path = os.path.join(output_dir, adapters_path)
     full_model_file = save_full_model(model_id, output_dir, adapters_path)
     # log model to MLRun
     context.log_model(
