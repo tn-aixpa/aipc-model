@@ -82,6 +82,7 @@ def save_full_model(model_name, output_dir, adapters_path):
     # Merge the trainer adapter with the base model and unload the adapter
     model = model.merge_and_unload()
     full_model_path = output_dir + "/full"
+    os.makedirs(full_model_path, exist_ok=True)
     model.save_pretrained(full_model_path, safe_serialization=True, max_shard_size="2GB")
     tokenizer.save_pretrained(full_model_path)
     with ZipFile("text2seq_full_model.zip", "w") as zip_file:
@@ -163,6 +164,8 @@ def training(context):
     os.environ["WANDB_API_KEY"] = context.get_secret('WANDB_API_KEY')
 
     trainer.train()
+    adapters_path = [el for el in os.listdir(output_dir) if el.startswith('checkpoint')][0]
+    adapters_path = os.path.join(output_dir, adapters_path)
     full_model_file = save_full_model(model_id, output_dir, adapters_path)
     # log model to MLRun
     context.log_model(

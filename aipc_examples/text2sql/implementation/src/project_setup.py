@@ -24,13 +24,6 @@ def setup(project: mlrun.projects.MlrunProject) -> mlrun.projects.MlrunProject:
     if default_image:
         project.set_default_image(default_image)
 
-    # build a docker image and optionally set it as the project default
-    if requirements_file:
-        project.build_image(
-            base_image=default_image,
-            requirements_file=requirements_file,
-            set_as_default=True,
-        )
 
     #serving_fn = project.set_function(
     #    model["inference"]["serving"]["implementation"]["source"],
