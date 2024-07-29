@@ -26,4 +26,13 @@ requests==2.28.2
 markupsafe==2.0.1
 trl
 # pip uninstall apex
-benchllm
+
+# version 29/07/2024
+giskard
+langchain 
+langchain-openai 
+langchain-community 
+pypdf 
+faiss-cpu 
+openai 
+tiktoken
