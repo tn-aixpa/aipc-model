@@ -1,3 +1,10 @@
 lightgbm
 fairlearn
 xlrd
+seaborn
+imblearn
+gdown
+jax
+optax
+flax
+ipywidgets
