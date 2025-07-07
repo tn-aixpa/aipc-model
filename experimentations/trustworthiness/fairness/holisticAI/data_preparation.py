@@ -1,7 +1,14 @@
 
 class DataPreparation():
+    """ Data preparation stage containing 4 operations
+    Data Profiling
+    Data Validation
+    Data Preprocessing
+    Data Documentation
+    """
     def __init__(self):
-        pass
+        self.stage = "Data Preparation"
+    
     
     def split_data_from_df(self, data):
         """
@@ -14,6 +21,7 @@ class DataPreparation():
         return X, y, dem  # Return features, labels, demographics
 
 
+    
     def resample_equal(self, df, cat):
         """
         Resamples the DataFrame to balance categories by oversampling

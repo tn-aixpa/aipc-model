@@ -1,0 +1,15 @@
+class_name: DataPreparation
+docstring: " Data preparation stage containing 4 operations\n    Data Profiling\n\
+  \    data Validation\n    Data Preprocessing\n    Data Documentation\n    "
+attributes:
+  stage: Data Preparation
+methods:
+  resample_equal:
+    docstring: "\n        Resamples the DataFrame to balance categories by oversampling\n\
+      \        based on a combined category-label identifier.\n        "
+    signature: '{}'
+  split_data_from_df:
+    docstring: "\n        Splits a DataFrame into features (X), labels (y), and demographic\
+      \ data (dem).\n        "
+    signature: '{}'
+static_methods: {}
