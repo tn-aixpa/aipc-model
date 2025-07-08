@@ -1,3 +1,4 @@
+from artifact_types import Data, Configuration, Report
 
 class Modelling():
     def __init__(self):
@@ -5,7 +6,6 @@ class Modelling():
     
     def train_model(self, data, config):
         """
-        
         Args:
             data (_type_): _description_
             config (_type_): _description_
@@ -105,4 +105,39 @@ class Modelling():
         """
         tprs = {g: cm[0, 0] / cm[0, :].sum() for g, cm in cms.items()}  # Calculate TPR
         return tprs  # Return dictionary of TPRs
+    
+    
+    def bias_mitigation_in_process_train(self, data: Data, config: Configuration):
+        # Train the model using the sample weights calculated through reweighing
+        model = RidgeClassifier(random_state=42)
+        model.fit(X_train, y_train, sample_weight=sample_weights.ravel())  # Fit model with sample weights
+
+        y_pred_test = model.predict(X_test)
+
+        # Define the groupings for fairness analysis (Black and White) in the test set
+        group_a_test = (dem_test['Ethnicity']=='Black')
+        group_b_test = (dem_test['Ethnicity']=='White')
+
+        # Get the fairness and accuracy metrics after applying reweighing
+        metrics_rw = get_metrics(group_a_test, group_b_test, y_pred_test, y_test)
+        display(metrics_rw)
+
+        # Add a 'mitigation' column to both metrics dataframes to label them accordingly
+        metrics_orig['mitigation'] = 'None'
+        metrics_rw['mitigation'] = 'Reweighing'
+
+        metrics = pd.concat([metrics_orig, metrics_rw], axis=0, ignore_index=True)
+        display(metrics)
+
+        # Plot the comparison of metrics between the original model and the model with reweighing
+        plt.figure(figsize=(10, 6))
+        sns.barplot(data=metrics, x='Metric', y='Value', hue='mitigation')
+        plt.axhline(y=0.8, linewidth=2, color='r', linestyle="--")
+        plt.axhline(y=-0.05, linewidth=2, color='r', linestyle="--")
+        plt.axhline(y=1, linewidth=2, color='g')
+        plt.axhline(y=0, linewidth=2, color='g')
+        plt.xticks(rotation=45, ha='right', fontsize=12)
+        plt.show()
+
+    
 

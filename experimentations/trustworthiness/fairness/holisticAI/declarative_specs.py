@@ -68,7 +68,7 @@ if __name__ == "__main__":
     class_spec = class_to_dict(dt_prep)
     
     # Save to YAML
-    with open("data_preparation_specs.yaml", "w") as f:
+    with open("metadata/data_preparation_specs.yaml", "w") as f:
         yaml.dump(class_spec, f, default_flow_style=False, sort_keys=False)
     
-    print("DataPreparation specifications saved to 'data_preparation_specs.yaml'")
+    print("DataPreparation specifications saved to 'metadata/data_preparation_specs.yaml'")
