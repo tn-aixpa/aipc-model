@@ -2,9 +2,14 @@ lightgbm
 fairlearn
 xlrd
 seaborn
-imblearn
+imbalanced-learn==0.13.0
+sklearn-compat==0.1.3
+scikit-learn==1.6.1
+holisticai==1.0.14
 gdown
 jax
 optax
 flax
 ipywidgets
+
+pyyaml

@@ -1,0 +1,20 @@
+
+stage: DataPreparation
+operations:
+  - type: data_preprocessing      
+    requirement_dimension: fairness
+    implementation: 
+      framework: local
+      spec:
+        path: data_preparation.py
+        method_name: bias_mitigation_pre_reweighing
+        requirements: ""
+      inputs:
+        - data: 
+          configuration: 
+      outputs:
+        - data: 
+artifacts:
+  data:
+  reports:
+  documentation:
