@@ -6,3 +6,7 @@ torch
 sentence-transformers
 faiss-gpu
 faiss-cpu
+
+### agent 
+crewai
+crewai_tools

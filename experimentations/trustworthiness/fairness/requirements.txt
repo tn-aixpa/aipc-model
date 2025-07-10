@@ -13,3 +13,6 @@ flax
 ipywidgets
 
 pyyaml
+interpret
+aix360
+lime
