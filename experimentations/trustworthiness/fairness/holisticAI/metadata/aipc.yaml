@@ -1,0 +1,21 @@
+stage: Modelling
+operations:
+  - type: model_training  
+    name:
+    inputs:
+      - data:
+      - configurations:
+    outputs:
+      - model:   
+
+    path: modelling.py
+    method_name: train_model
+    requirement_dimension: quality
+  - type: model_training
+    path: modelling.py
+    method_name: bias_mitigation_in_process_train 
+    requirement_dimension: fairness
+artifacts:
+  data:
+  reports:
+  documentation:
